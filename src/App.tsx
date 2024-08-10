@@ -3,19 +3,12 @@ import { Game as GameScene } from "@/components/scenes/game";
 import { Lobby } from "@/components/scenes/lobby";
 import { Main } from "@/components/scenes/main";
 import { Result } from "@/components/scenes/result";
-import { Scene, type Game } from "@/types";
-import { atom, useAtomValue } from "jotai";
-
-export const gameAtom = atom<Game>({
-  id: undefined,
-  scene: Scene.MAIN,
-  name: undefined,
-  players: [],
-  list: [],
-  state: false,
-});
+import { gameAtom, useGame } from "@/hooks/useGame";
+import { Scene } from "@/types";
+import { useAtomValue } from "jotai";
 
 function App() {
+  useGame();
   const game = useAtomValue(gameAtom);
 
   return (
