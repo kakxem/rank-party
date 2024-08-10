@@ -28,6 +28,11 @@ export enum Scene {
   RESULT = "result",
 }
 
+export enum Messages {
+  UPDATE_CLIENT = "updateClient",
+  UPDATE_SERVER = "updateServer",
+}
+
 export interface Game {
   id?: string;
   name?: string;
