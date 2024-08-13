@@ -6,6 +6,7 @@ export enum Role {
 export interface Player {
   id: string;
   name: string;
+  active: boolean;
   role: Role;
 }
 
@@ -32,6 +33,14 @@ export enum Messages {
   UPDATE_CLIENT = "updateClient",
   UPDATE_SERVER = "updateServer",
 }
+
+export type ConnectionData = {
+  player: {
+    id: string;
+    name: string;
+  };
+  roomCode: string;
+};
 
 export interface Game {
   id?: string;

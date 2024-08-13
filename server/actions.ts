@@ -1,21 +1,24 @@
-import type { UserData } from ".";
-import { Role, Scene, type Game, type Player } from "../src/types";
+import {
+  Role,
+  Scene,
+  type ConnectionData,
+  type Game,
+  type Player,
+} from "../src/types";
 
-export const createNewGame = ({
-  playerName,
-  roomCode,
-}: Omit<UserData, "pathname">): Game => {
-  const player: Player = {
-    id: "0",
-    name: playerName,
+export const createNewGame = ({ player, roomCode }: ConnectionData): Game => {
+  const newPlayer: Player = {
+    id: player.id.toString(),
+    name: player.name,
+    active: true,
     role: Role.ADMIN,
   };
 
   return {
     id: roomCode,
-    name: "Random",
+    name: "Change the room name",
     scene: Scene.LOBBY,
-    players: [player],
+    players: [newPlayer],
     list: [],
     state: false,
   };
@@ -23,20 +26,20 @@ export const createNewGame = ({
 
 export const joinGame = ({
   game,
-  playerName,
+  player,
 }: {
   game: Game;
-  playerName: string;
+  player: ConnectionData["player"];
 }) => {
-  const modifiedGame = { ...game };
+  const modifiedGame = structuredClone(game);
 
-  const player: Player = {
-    // ! This will cause many problems if someone leaves the game
-    id: game.players.length.toString(),
-    name: playerName,
+  const newPlayer: Player = {
+    id: player.id.toString(),
+    name: player.name,
+    active: true,
     role: Role.USER,
   };
-  modifiedGame.players.push(player);
+  modifiedGame.players.push(newPlayer);
 
   return modifiedGame;
 };

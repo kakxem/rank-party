@@ -1,34 +1,32 @@
 import Bun from "bun";
-import { Messages, type Game } from "../src/types";
+import { Messages, type ConnectionData, type Game } from "../src/types";
 import { createNewGame, joinGame } from "./actions";
-
-export interface UserData {
-  roomCode?: string;
-  playerName: string;
-  pathname: string;
-}
 
 const games: Game[] = [];
 
-const getUserData = (req: Request) => {
+const getConnectionData = (req: Request) => {
   const url = new URL(req.url);
-  let roomCode = url.searchParams.get("roomCode");
-  const playerName = url.searchParams.get("playerName");
+  const data: ConnectionData = JSON.parse(url.searchParams.get("data") || "{}");
 
-  if (!roomCode) {
-    roomCode = Math.random().toString(36).slice(2, 8);
-  }
-  return { roomCode, playerName };
+  return data;
 };
 
-const server = Bun.serve<UserData>({
+const getGameInfo = (roomCode: string) => {
+  const game = games.find((game) => game.id === roomCode);
+  const index = games.findIndex((game) => game.id === roomCode);
+
+  return { game, index };
+};
+
+const server = Bun.serve<ConnectionData>({
   port: 5000,
   fetch(req, server) {
     const { pathname } = new URL(req.url);
-    const { roomCode, playerName } = getUserData(req);
+    const connectionData = getConnectionData(req);
+    console.log(connectionData);
 
     if (pathname === "/join") {
-      const game = games.find((game) => game.id === roomCode);
+      const game = games.find((game) => game.id === connectionData.roomCode);
 
       if (!game) {
         console.log("game not found");
@@ -39,28 +37,28 @@ const server = Bun.serve<UserData>({
     }
 
     server.upgrade(req, {
-      data: { roomCode, playerName },
+      data: connectionData,
     });
   },
   websocket: {
     idleTimeout: 10,
     open(ws) {
-      const { roomCode, playerName } = ws.data;
+      const { roomCode, player } = ws.data;
 
-      let game = games.find((game) => game.id === roomCode);
+      const { game, index: gameIndex } = getGameInfo(roomCode);
+      let newGame = game;
       if (game) {
-        const gameIndex = games.findIndex((game) => game.id === roomCode);
-        game = joinGame({ game, playerName });
-        games[gameIndex] = game;
+        newGame = joinGame({ game, player });
+        games[gameIndex] = newGame;
       } else {
-        game = createNewGame({ playerName, roomCode });
-        games.push(game);
+        newGame = createNewGame({ player, roomCode });
+        games.push(newGame);
       }
 
       ws.subscribe(`room-${roomCode}`);
       server.publish(
         `room-${roomCode}`,
-        JSON.stringify({ type: Messages.UPDATE_CLIENT, data: game }),
+        JSON.stringify({ type: Messages.UPDATE_CLIENT, data: newGame }),
       );
     },
     message(ws, message) {
@@ -68,13 +66,32 @@ const server = Bun.serve<UserData>({
       // const { type, data } = JSON.parse(message);
     },
     close(ws) {
-      const { roomCode, playerName } = ws.data;
-      console.log("close", roomCode, playerName);
-      // ws.unsubscribe(`room-${roomCode}`);
-      // server.publish(
-      //   `room-${roomCode}`,
-      //   JSON.stringify({ type: "leave", data: { roomCode, playerName } }),
-      // );
+      const { roomCode, player } = ws.data;
+      ws.unsubscribe(`room-${roomCode}`);
+
+      const { game, index } = getGameInfo(roomCode);
+      if (!game) return;
+
+      // Deep copy the game
+      const modifiedGame = structuredClone(game);
+
+      modifiedGame.players = game.players.map((item) => {
+        if (item.id === player.id) {
+          return {
+            ...item,
+            active: false,
+          };
+        }
+        return item;
+      });
+
+      // TODO: We should also transfer the ADMIN role if there isn't one
+
+      games[index] = modifiedGame;
+      server.publish(
+        `room-${roomCode}`,
+        JSON.stringify({ type: Messages.UPDATE_CLIENT, data: modifiedGame }),
+      );
     },
   },
 });

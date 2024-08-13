@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { wsAtom } from "@/hooks/useGame";
+import type { ConnectionData } from "@/types";
 import { useSetAtom } from "jotai";
 import { useState } from "react";
 
@@ -10,14 +11,35 @@ export const Main = () => {
   const [roomCode, setRoomCode] = useState("");
 
   const handleCreate = () => {
-    const ws = new WebSocket(`ws://localhost:5000?playerName=${playerName}`);
+    if (!playerName) return;
+
+    const data: ConnectionData = {
+      player: {
+        id: String(Math.floor(Math.random() * 1000000000)),
+        name: playerName,
+      },
+      roomCode: Math.random().toString(36).slice(2, 8),
+    };
+
+    const ws = new WebSocket(
+      `ws://localhost:5000?data=${JSON.stringify(data)}`,
+    );
     setWs(ws);
   };
 
   const handleJoin = () => {
-    if (!roomCode) return;
+    if (!playerName || !roomCode) return;
+
+    const data: ConnectionData = {
+      player: {
+        id: String(Math.floor(Math.random() * 1000000000)),
+        name: playerName,
+      },
+      roomCode,
+    };
+
     const ws = new WebSocket(
-      `ws://localhost:5000/join?playerName=${playerName}&roomCode=${roomCode}`,
+      `ws://localhost:5000/join?data=${JSON.stringify(data)}`,
     );
     setWs(ws);
   };
