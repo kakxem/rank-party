@@ -14,8 +14,13 @@ function App() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="flex justify-center pt-5">
+      <header className="flex items-center justify-center pt-5">
         <EditableRoomName />
+        {game.scene !== Scene.MAIN && (
+          <p className="text-md absolute right-20 font-bold">
+            Game ID: {game.id}
+          </p>
+        )}
       </header>
 
       <main className="container flex h-full flex-1 px-10 py-5">
