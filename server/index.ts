@@ -15,7 +15,7 @@ const getGameInfo = (roomCode: string) => {
   const game = games.find((game) => game.id === roomCode);
   const index = games.findIndex((game) => game.id === roomCode);
 
-  return { game, index };
+  return { game: structuredClone(game), index };
 };
 
 const server = Bun.serve<ConnectionData>({
@@ -45,11 +45,11 @@ const server = Bun.serve<ConnectionData>({
     open(ws) {
       const { roomCode, player } = ws.data;
 
-      const { game, index: gameIndex } = getGameInfo(roomCode);
+      const { game, index } = getGameInfo(roomCode);
       let newGame = game;
       if (game) {
         newGame = joinGame({ game, player });
-        games[gameIndex] = newGame;
+        games[index] = newGame;
       } else {
         newGame = createNewGame({ player, roomCode });
         games.push(newGame);
@@ -63,7 +63,23 @@ const server = Bun.serve<ConnectionData>({
     },
     message(ws, message) {
       if (typeof message !== "string") return;
-      // const { type, data } = JSON.parse(message);
+
+      const { roomCode } = ws.data;
+      const { type, data } = JSON.parse(message);
+      
+      if (type === Messages.UPDATE_ROOM_NAME) {
+        const { newName } = data;
+        const { game, index} = getGameInfo(roomCode);
+    
+        if (game) {
+          game.name = newName;
+          games[index] = game;
+          server.publish(
+            `room-${roomCode}`,
+            JSON.stringify({ type: Messages.UPDATE_CLIENT, data: game }),
+          );
+        }
+      }
     },
     close(ws) {
       const { roomCode, player } = ws.data;
@@ -72,10 +88,7 @@ const server = Bun.serve<ConnectionData>({
       const { game, index } = getGameInfo(roomCode);
       if (!game) return;
 
-      // Deep copy the game
-      const modifiedGame = structuredClone(game);
-
-      modifiedGame.players = game.players.map((item) => {
+      game.players = game.players.map((item) => {
         if (item.id === player.id) {
           return {
             ...item,
@@ -87,10 +100,10 @@ const server = Bun.serve<ConnectionData>({
 
       // TODO: We should also transfer the ADMIN role if there isn't one
 
-      games[index] = modifiedGame;
+      games[index] = game;
       server.publish(
         `room-${roomCode}`,
-        JSON.stringify({ type: Messages.UPDATE_CLIENT, data: modifiedGame }),
+        JSON.stringify({ type: Messages.UPDATE_CLIENT, data: game }),
       );
     },
   },

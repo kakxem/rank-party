@@ -6,6 +6,7 @@ import { Result } from "@/components/scenes/result";
 import { gameAtom, useGame } from "@/hooks/useGame";
 import { Scene } from "@/types";
 import { useAtomValue } from "jotai";
+import EditableRoomName from "./components/editable-room-name";
 
 function App() {
   useGame();
@@ -14,7 +15,7 @@ function App() {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="flex justify-center p-5">
-        <h1 className="text-3xl font-bold underline">Party rank list!</h1>
+        <EditableRoomName/>
       </header>
 
       <main className="flex h-full flex-1 p-10">
