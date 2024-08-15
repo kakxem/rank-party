@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
-import { useAtomValue } from "jotai";
 import { gameAtom, wsAtom } from "@/hooks/useGame";
 import { Messages, Scene } from "@/types";
+import { useAtomValue } from "jotai";
+import { useEffect, useRef } from "react";
 
 const EditableRoomName = () => {
   const game = useAtomValue(gameAtom);
@@ -33,7 +33,7 @@ const EditableRoomName = () => {
       ref={roomNameRef}
       suppressContentEditableWarning
       onBlur={handleInputChange}
-      className="text-2xl font-semibold"
+      className="text-4xl font-semibold"
     >
       {game.name || "Party Rank Group"}
     </h1>

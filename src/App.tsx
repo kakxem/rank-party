@@ -14,11 +14,11 @@ function App() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="flex justify-center p-5">
-        <EditableRoomName/>
+      <header className="flex justify-center pt-5">
+        <EditableRoomName />
       </header>
 
-      <main className="flex h-full flex-1 p-10">
+      <main className="container flex h-full flex-1 px-10 py-5">
         {game.scene === Scene.MAIN && <Main />}
         {game.scene === Scene.LOBBY && <Lobby />}
         {game.scene === Scene.GAME && <GameScene />}
