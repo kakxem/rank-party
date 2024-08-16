@@ -67,8 +67,13 @@ export const Lobby = () => {
         <section className="h-full w-full p-5">
           <header>
             <form className="flex gap-2" onSubmit={handleSubmit}>
-              <Input name="name" className="max-w-xs" placeholder="Item name" />
-              <Input name="link" placeholder="Item link" />
+              <Input
+                name="name"
+                className="max-w-xs"
+                placeholder="Item name"
+                autoComplete="off"
+              />
+              <Input name="link" placeholder="Item link" autoComplete="off" />
               <Button type="submit">Add</Button>
             </form>
           </header>
