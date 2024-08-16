@@ -1,6 +1,7 @@
 import { Messages, Scene, type Game } from "@/types";
 import { atom, useAtomValue, useSetAtom } from "jotai";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 export const wsAtom = atom<WebSocket | null>(null);
 export const gameAtom = atom<Game>({
@@ -28,6 +29,10 @@ export const useGame = () => {
 
       if (type === Messages.UPDATE_CLIENT) {
         setGame((prev) => ({ ...prev, ...data }));
+      }
+
+      if (type === Messages.ERROR) {
+        toast.error(data.message);
       }
     };
 

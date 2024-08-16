@@ -34,6 +34,7 @@ export enum Messages {
   UPDATE_SERVER = "updateServer",
   UPDATE_ROOM_NAME = "updateRoomName",
   ADD_ITEM = "addItem",
+  ERROR = "error",
 }
 
 export type ConnectionData = {
