@@ -33,6 +33,7 @@ export enum Messages {
   UPDATE_CLIENT = "updateClient",
   UPDATE_SERVER = "updateServer",
   UPDATE_ROOM_NAME = "updateRoomName",
+  ADD_ITEM = "addItem",
 }
 
 export type ConnectionData = {

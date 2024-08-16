@@ -66,13 +66,31 @@ const server = Bun.serve<ConnectionData>({
 
       const { roomCode } = ws.data;
       const { type, data } = JSON.parse(message);
-      
+      const { game, index } = getGameInfo(roomCode);
+
       if (type === Messages.UPDATE_ROOM_NAME) {
         const { newName } = data;
-        const { game, index} = getGameInfo(roomCode);
-    
+
         if (game) {
           game.name = newName;
+          games[index] = game;
+          server.publish(
+            `room-${roomCode}`,
+            JSON.stringify({ type: Messages.UPDATE_CLIENT, data: game }),
+          );
+        }
+      }
+
+      if (type === Messages.ADD_ITEM) {
+        const { name, link } = data;
+
+        if (game) {
+          const isDuplicate = game.list.some(
+            (item) => item.name === name || item.link === link,
+          );
+          if (isDuplicate) return;
+
+          game.list.push({ id: `${name}-${link}`, name, link, score: [] });
           games[index] = game;
           server.publish(
             `room-${roomCode}`,
@@ -83,8 +101,6 @@ const server = Bun.serve<ConnectionData>({
     },
     close(ws) {
       const { roomCode, player } = ws.data;
-      ws.unsubscribe(`room-${roomCode}`);
-
       const { game, index } = getGameInfo(roomCode);
       if (!game) return;
 
@@ -101,6 +117,7 @@ const server = Bun.serve<ConnectionData>({
       // TODO: We should also transfer the ADMIN role if there isn't one
 
       games[index] = game;
+      ws.unsubscribe(`room-${roomCode}`);
       server.publish(
         `room-${roomCode}`,
         JSON.stringify({ type: Messages.UPDATE_CLIENT, data: game }),
