@@ -1,6 +1,6 @@
 import Bun from "bun";
 import { Messages, type ConnectionData, type Game } from "../src/types";
-import { createNewGame, joinGame } from "./actions";
+import { createNewGame, joinGame, sendError } from "./actions";
 
 const games: Game[] = [];
 
@@ -12,10 +12,35 @@ const getConnectionData = (req: Request) => {
 };
 
 const getGameInfo = (roomCode: string) => {
-  const game = games.find((game) => game.id === roomCode);
   const index = games.findIndex((game) => game.id === roomCode);
+  const game = index !== -1 ? structuredClone(games[index]) : undefined;
+  const roomName = `room-${roomCode}`;
 
-  return { game: structuredClone(game), index };
+  return { game, index, roomName };
+};
+
+const updateAndPublishGame = ({
+  roomCode,
+  updatedGame,
+  server,
+}: {
+  roomCode: string;
+  updatedGame: Partial<Game>;
+  server: Bun.Server;
+}) => {
+  const { game, index, roomName } = getGameInfo(roomCode);
+
+  if (game) {
+    // Update game with new data
+    Object.assign(game, updatedGame);
+    games[index] = game;
+
+    // Publish updated game state
+    server.publish(
+      roomName,
+      JSON.stringify({ type: Messages.UPDATE_CLIENT, data: game }),
+    );
+  }
 };
 
 const server = Bun.serve<ConnectionData>({
@@ -44,9 +69,9 @@ const server = Bun.serve<ConnectionData>({
     idleTimeout: 10,
     open(ws) {
       const { roomCode, player } = ws.data;
-
-      const { game, index } = getGameInfo(roomCode);
+      const { game, index, roomName } = getGameInfo(roomCode);
       let newGame = game;
+
       if (game) {
         newGame = joinGame({ game, player });
         games[index] = newGame;
@@ -55,30 +80,27 @@ const server = Bun.serve<ConnectionData>({
         games.push(newGame);
       }
 
-      ws.subscribe(`room-${roomCode}`);
-      server.publish(
-        `room-${roomCode}`,
-        JSON.stringify({ type: Messages.UPDATE_CLIENT, data: newGame }),
-      );
+      ws.subscribe(roomName);
+      updateAndPublishGame({
+        roomCode,
+        updatedGame: newGame,
+        server,
+      });
     },
     message(ws, message) {
       if (typeof message !== "string") return;
 
       const { roomCode } = ws.data;
       const { type, data } = JSON.parse(message);
-      const { game, index } = getGameInfo(roomCode);
+      const { game } = getGameInfo(roomCode);
 
       if (type === Messages.UPDATE_ROOM_NAME) {
         const { newName } = data;
-
-        if (game) {
-          game.name = newName;
-          games[index] = game;
-          server.publish(
-            `room-${roomCode}`,
-            JSON.stringify({ type: Messages.UPDATE_CLIENT, data: game }),
-          );
-        }
+        updateAndPublishGame({
+          roomCode,
+          updatedGame: { name: newName },
+          server,
+        });
       }
 
       if (type === Messages.ADD_ITEM) {
@@ -88,40 +110,37 @@ const server = Bun.serve<ConnectionData>({
           const isDuplicate = game.list.some(
             (item) => item.name === name || item.link === link,
           );
-          if (isDuplicate) return;
+          if (isDuplicate) {
+            return sendError({ ws, message: "Item already exists" });
+          }
 
           game.list.push({ id: `${name}-${link}`, name, link, score: [] });
-          games[index] = game;
-          server.publish(
-            `room-${roomCode}`,
-            JSON.stringify({ type: Messages.UPDATE_CLIENT, data: game }),
-          );
+          updateAndPublishGame({
+            roomCode,
+            updatedGame: { list: game.list },
+            server,
+          });
         }
       }
     },
     close(ws) {
       const { roomCode, player } = ws.data;
-      const { game, index } = getGameInfo(roomCode);
-      if (!game) return;
+      const { game, roomName } = getGameInfo(roomCode);
 
-      game.players = game.players.map((item) => {
-        if (item.id === player.id) {
-          return {
-            ...item,
-            active: false,
-          };
-        }
-        return item;
-      });
+      if (game) {
+        game.players = game.players.map((item) =>
+          item.id === player.id ? { ...item, active: false } : item,
+        );
 
-      // TODO: We should also transfer the ADMIN role if there isn't one
+        // TODO: Handle ADMIN role transfer if necessary
 
-      games[index] = game;
-      ws.unsubscribe(`room-${roomCode}`);
-      server.publish(
-        `room-${roomCode}`,
-        JSON.stringify({ type: Messages.UPDATE_CLIENT, data: game }),
-      );
+        ws.unsubscribe(roomName);
+        updateAndPublishGame({
+          roomCode,
+          updatedGame: game,
+          server,
+        });
+      }
     },
   },
 });

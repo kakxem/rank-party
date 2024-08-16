@@ -1,4 +1,6 @@
+import { ServerWebSocket } from "bun";
 import {
+  Messages,
   Role,
   Scene,
   type ConnectionData,
@@ -42,4 +44,14 @@ export const joinGame = ({
   modifiedGame.players.push(newPlayer);
 
   return modifiedGame;
+};
+
+export const sendError = ({
+  ws,
+  message,
+}: {
+  ws: ServerWebSocket<ConnectionData>;
+  message: string;
+}) => {
+  ws.send(JSON.stringify({ type: Messages.ERROR, data: { message } }));
 };
