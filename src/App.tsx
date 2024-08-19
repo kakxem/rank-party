@@ -1,12 +1,12 @@
 import { Debug } from "@/components/debug";
-import { Game as GameScene } from "@/components/scenes/game";
-import { Lobby } from "@/components/scenes/lobby";
-import { Main } from "@/components/scenes/main";
-import { Result } from "@/components/scenes/result";
+import EditableRoomName from "@/components/editable-room-name";
 import { gameAtom, useGame } from "@/hooks/useGame";
+import { Game } from "@/modules/game";
+import { Lobby } from "@/modules/lobby";
+import { Main } from "@/modules/main";
+import { Result } from "@/modules/result";
 import { Scene } from "@/types";
 import { useAtomValue } from "jotai";
-import EditableRoomName from "./components/editable-room-name";
 import { Toaster } from "sonner";
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
         <main className="container flex h-full flex-1 px-10 py-5">
           {game.scene === Scene.MAIN && <Main />}
           {game.scene === Scene.LOBBY && <Lobby />}
-          {game.scene === Scene.GAME && <GameScene />}
+          {game.scene === Scene.GAME && <Game />}
           {game.scene === Scene.RESULT && <Result />}
         </main>
 
