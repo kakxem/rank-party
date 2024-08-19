@@ -3,7 +3,7 @@ import { Messages, Scene } from "@/types";
 import { useAtomValue } from "jotai";
 import { useEffect, useRef } from "react";
 
-const EditableRoomName = () => {
+export const EditableRoomName = () => {
   const game = useAtomValue(gameAtom);
   const ws = useAtomValue(wsAtom);
   const roomNameRef = useRef<HTMLHeadingElement>(null);
@@ -39,5 +39,3 @@ const EditableRoomName = () => {
     </h1>
   );
 };
-
-export default EditableRoomName;
