@@ -122,6 +122,19 @@ const server = Bun.serve<ConnectionData>({
           });
         }
       }
+
+      if (type === Messages.DELETE_ITEM) {
+        const { id } = data;
+
+        if (game) {
+          game.list = game.list.filter((item) => item.id !== id);
+          updateAndPublishGame({
+            roomCode,
+            updatedGame: { list: game.list },
+            server,
+          });
+        }
+      }
     },
     close(ws) {
       const { roomCode, player } = ws.data;
