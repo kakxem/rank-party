@@ -30,7 +30,7 @@ export const Lobby = () => {
 
   return (
     <section className="flex flex-1 justify-between gap-3">
-      <aside className="flex max-w-sm flex-1 flex-col gap-3 p-5">
+      <aside className="flex max-w-sm flex-1 flex-col gap-3 rounded-xl bg-slate-100 p-5 dark:bg-slate-900">
         <header className="flex justify-between">
           <h2 className="flex items-center text-xl font-bold">Players</h2>
 
@@ -46,9 +46,9 @@ export const Lobby = () => {
             return (
               <li
                 key={player.id}
-                className="flex h-20 items-center gap-3 rounded-md bg-slate-50 p-2 px-3"
+                className="flex h-20 items-center gap-3 rounded-md bg-slate-200 p-2 px-3 dark:bg-slate-800"
               >
-                <div className="flex rounded-md border-2 p-5">
+                <div className="flex rounded-md border-2 p-5 dark:border-slate-700">
                   {player.name.slice(0, 1).toUpperCase()}
                 </div>
                 <p className="flex flex-1 justify-between">
@@ -63,7 +63,7 @@ export const Lobby = () => {
         </ul>
       </aside>
 
-      <div className="flex flex-1 flex-col justify-between gap-3">
+      <div className="flex flex-1 flex-col justify-between gap-3 rounded-xl bg-slate-100 p-5 dark:bg-slate-900">
         <section className="h-full w-full p-5">
           <header>
             <form className="flex gap-2" onSubmit={handleSubmit}>
