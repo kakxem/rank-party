@@ -1,5 +1,6 @@
 import { Debug } from "@/components/debug";
 import { EditableRoomName } from "@/components/editable-room-name";
+import { Players } from "@/components/players";
 import { gameAtom, useGame } from "@/hooks/useGame";
 import { Game } from "@/modules/game";
 import { Lobby } from "@/modules/lobby";
@@ -25,7 +26,9 @@ function App() {
           )}
         </header>
 
-        <main className="container flex h-full flex-1 px-10 py-5">
+        <main className="container flex h-full flex-1 gap-4 px-10 py-3">
+          {game.scene !== Scene.MAIN && <Players />}
+
           {game.scene === Scene.MAIN && <Main />}
           {game.scene === Scene.LOBBY && <Lobby />}
           {game.scene === Scene.GAME && <Game />}
