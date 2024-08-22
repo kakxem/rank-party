@@ -19,6 +19,7 @@ export interface Item {
   id: string;
   name: string;
   link: string;
+  createdBy: string;
   score: PlayerScore[];
 }
 

@@ -90,6 +90,25 @@ export const ItemsTable = () => {
       },
     },
     {
+      accessorKey: "createdBy",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Created By
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => {
+        const createdBy = row.getValue("createdBy") as string;
+        const player = game.players.find((item) => item.id === createdBy);
+        return <div className="max-w-md truncate">{player?.name ?? "-"}</div>;
+      },
+    },
+    {
       accessorKey: "id",
       header: "",
       cell: ({ row }) => {

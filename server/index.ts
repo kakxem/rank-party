@@ -90,7 +90,7 @@ const server = Bun.serve<ConnectionData>({
     message(ws, message) {
       if (typeof message !== "string") return;
 
-      const { roomCode } = ws.data;
+      const { roomCode, player } = ws.data;
       const { type, data } = JSON.parse(message);
       const { game } = getGameInfo(roomCode);
 
@@ -114,7 +114,13 @@ const server = Bun.serve<ConnectionData>({
             return sendError({ ws, message: "Item already exists" });
           }
 
-          game.list.push({ id: `${name}-${link}`, name, link, score: [] });
+          game.list.push({
+            id: `${name}-${link}`,
+            name,
+            link,
+            createdBy: player.id,
+            score: [],
+          });
           updateAndPublishGame({
             roomCode,
             updatedGame: { list: game.list },
