@@ -34,6 +34,7 @@ export enum Messages {
   UPDATE_CLIENT = "updateClient",
   UPDATE_SERVER = "updateServer",
   UPDATE_ROOM_NAME = "updateRoomName",
+  START_GAME = "startGame",
   ADD_ITEM = "addItem",
   DELETE_ITEM = "deleteItem",
   ERROR = "error",

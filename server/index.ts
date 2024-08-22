@@ -1,5 +1,5 @@
 import Bun from "bun";
-import { Messages, type ConnectionData, type Game } from "../src/types";
+import { Messages, Scene, type ConnectionData, type Game } from "../src/types";
 import { createNewGame, joinGame, sendError } from "./actions";
 
 const games: Game[] = [];
@@ -137,6 +137,17 @@ const server = Bun.serve<ConnectionData>({
           updateAndPublishGame({
             roomCode,
             updatedGame: { list: game.list },
+            server,
+          });
+        }
+      }
+
+      if (type === Messages.START_GAME) {
+        if (game) {
+          game.scene = Scene.GAME;
+          updateAndPublishGame({
+            roomCode,
+            updatedGame: { scene: game.scene },
             server,
           });
         }

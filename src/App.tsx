@@ -22,7 +22,7 @@ function App() {
         </header>
 
         <main className="container flex h-full flex-1 gap-4 px-10 py-3">
-          {game.scene !== Scene.MAIN && <Players />}
+          {![Scene.MAIN, Scene.GAME].includes(game.scene) && <Players />}
 
           {game.scene === Scene.MAIN && <Main />}
           {game.scene === Scene.LOBBY && <Lobby />}
