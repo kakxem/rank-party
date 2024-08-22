@@ -33,7 +33,7 @@ export const EditableRoomName = () => {
       ref={roomNameRef}
       suppressContentEditableWarning
       onBlur={handleInputChange}
-      className="text-4xl font-semibold"
+      className="text-center text-4xl font-semibold"
     >
       {game.name || "Party Rank Group"}
     </h1>
