@@ -17,16 +17,8 @@ function App() {
   return (
     <>
       <div className="flex min-h-screen flex-col">
-        <header className="flex items-center justify-between px-10 pt-5">
-          <div></div>
+        <header className="flex items-center justify-center px-10 pt-5">
           <EditableRoomName />
-          <div>
-            {game.scene !== Scene.MAIN && (
-              <p className="text-md text-center font-bold">
-                Game ID: {game.id}
-              </p>
-            )}
-          </div>
         </header>
 
         <main className="container flex h-full flex-1 gap-4 px-10 py-3">
