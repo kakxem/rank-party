@@ -1,23 +1,48 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { wsAtom } from "@/hooks/useGame";
-import type { ConnectionData } from "@/types";
+import type { ConnectionData, Player } from "@/types";
 import { useSetAtom } from "jotai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const getSavedPlayer = () => {
+  return JSON.parse(localStorage.getItem("player") ?? "{}") as Pick<
+    Player,
+    "id" | "name"
+  >;
+};
+
+const setSavedPlayer = (player: Pick<Player, "id" | "name">) => {
+  localStorage.setItem("player", JSON.stringify(player));
+};
 
 export const Main = () => {
   const setWs = useSetAtom(wsAtom);
   const [playerName, setPlayerName] = useState("");
   const [roomCode, setRoomCode] = useState("");
 
+  useEffect(() => {
+    const savedPlayer = getSavedPlayer();
+    if (savedPlayer?.name) setPlayerName(savedPlayer.name);
+  }, []);
+
+  const createPlayer = () => {
+    const savedPlayer = getSavedPlayer();
+
+    const newPlayer = {
+      id: savedPlayer?.id ?? Math.random().toString(36).slice(2, 8),
+      name: playerName,
+    };
+    setSavedPlayer(newPlayer);
+
+    return newPlayer;
+  };
+
   const handleCreate = () => {
     if (!playerName) return;
 
     const data: ConnectionData = {
-      player: {
-        id: String(Math.floor(Math.random() * 1000000000)),
-        name: playerName,
-      },
+      player: createPlayer(),
       roomCode: Math.random().toString(36).slice(2, 8),
     };
 
@@ -31,10 +56,7 @@ export const Main = () => {
     if (!playerName || !roomCode) return;
 
     const data: ConnectionData = {
-      player: {
-        id: String(Math.floor(Math.random() * 1000000000)),
-        name: playerName,
-      },
+      player: createPlayer(),
       roomCode,
     };
 
@@ -50,6 +72,7 @@ export const Main = () => {
         <Input
           placeholder="Player name"
           onChange={(e) => setPlayerName(e.target.value)}
+          value={playerName}
           className="w-80"
         />
       </div>
@@ -63,6 +86,7 @@ export const Main = () => {
           <Input
             placeholder="Room code"
             onChange={(e) => setRoomCode(e.target.value)}
+            value={roomCode}
             className="w-56"
           />
           <Button onClick={handleJoin}>Join</Button>

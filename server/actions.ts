@@ -33,7 +33,17 @@ export const joinGame = ({
   game: Game;
   player: ConnectionData["player"];
 }) => {
-  const modifiedGame = structuredClone(game);
+  const oldPlayer = game.players.find(
+    (item) => item.id === player.id.toString(),
+  );
+  if (oldPlayer) {
+    const indexPlayer = game.players.indexOf(oldPlayer);
+    oldPlayer.active = true;
+    oldPlayer.name = player.name;
+    game.players.splice(indexPlayer, 1, oldPlayer);
+
+    return game;
+  }
 
   const newPlayer: Player = {
     id: player.id.toString(),
@@ -41,9 +51,9 @@ export const joinGame = ({
     active: true,
     role: Role.USER,
   };
-  modifiedGame.players.push(newPlayer);
+  game.players.push(newPlayer);
 
-  return modifiedGame;
+  return game;
 };
 
 export const sendError = ({
