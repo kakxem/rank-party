@@ -4,6 +4,7 @@ import { wsAtom } from "@/hooks/useGame";
 import type { ConnectionData, Player } from "@/types";
 import { useSetAtom } from "jotai";
 import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const getSavedPlayer = () => {
   return JSON.parse(localStorage.getItem("player") ?? "{}") as Pick<
@@ -30,7 +31,7 @@ export const Main = () => {
     const savedPlayer = getSavedPlayer();
 
     const newPlayer = {
-      id: savedPlayer?.id ?? Math.random().toString(36).slice(2, 8),
+      id: savedPlayer?.id ?? uuidv4(),
       name: playerName,
     };
     setSavedPlayer(newPlayer);
