@@ -129,12 +129,20 @@ export const ItemsTable = () => {
       <header>
         <form className="flex gap-2" onSubmit={handleAddItem}>
           <Input
+            type="text"
             name="name"
             className="max-w-xs"
             placeholder="Item name"
             autoComplete="off"
+            aria-autocomplete="none"
           />
-          <Input name="link" placeholder="Item link" autoComplete="off" />
+          <Input
+            type="url"
+            name="link"
+            placeholder="Item link"
+            autoComplete="off"
+            aria-autocomplete="none"
+          />
           <Button type="submit">Add</Button>
         </form>
       </header>
