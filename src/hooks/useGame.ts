@@ -10,7 +10,16 @@ export const gameAtom = atom<Game>({
   name: undefined,
   players: [],
   list: [],
-  state: false,
+  state: {
+    actualItem: {
+      id: "",
+      name: "",
+      link: "",
+      createdBy: "",
+      score: [],
+    },
+    actualItemIndex: 0,
+  },
 });
 
 export const useGame = () => {

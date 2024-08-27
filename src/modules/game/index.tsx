@@ -1,25 +1,99 @@
 import { Button } from "@/components/ui/button";
+import { gameAtom, wsAtom } from "@/hooks/useGame";
+import { cn } from "@/lib/utils";
+import { Messages } from "@/types";
+import "@justinribeiro/lite-youtube";
+import { useAtomValue } from "jotai";
+import { useEffect, useState } from "react";
+
+const YOUTUBE_REGEX =
+  /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
 
 export const Game = () => {
+  const game = useAtomValue(gameAtom);
+  const ws = useAtomValue(wsAtom);
+  const [videoId, setVideoId] = useState("");
+  const [activePlayers, setActivePlayers] = useState(0);
+  const [selectedScore, setSelectedScore] = useState<number | null>(null);
+  const [remainingTime, setRemainingTime] = useState(10);
+
+  const alreadyVoted = game?.state?.actualItem?.score?.length ?? 0;
+
+  useEffect(() => {
+    if (game.state.actualItem) {
+      // Set the video id
+      if (YOUTUBE_REGEX.test(game.state.actualItem.link)) {
+        const id = game.state.actualItem.link.match(YOUTUBE_REGEX)?.[1];
+        return setVideoId(id ?? "");
+      }
+
+      // Restart the game
+      const activePlayers = game.players.filter((player) => player.active);
+      setActivePlayers(activePlayers.length);
+      setRemainingTime(10);
+      setSelectedScore(null);
+    }
+  }, [game.state.actualItem, game.players]);
+
+  useEffect(() => {
+    // Set the remaining time
+    if (alreadyVoted === activePlayers) {
+      const interval = setInterval(() => {
+        setRemainingTime((prev) => prev - 1);
+        if (remainingTime === 0) clearInterval(interval);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [activePlayers, alreadyVoted, remainingTime]);
+
+  useEffect(() => {
+    if (selectedScore) {
+      ws?.send(
+        JSON.stringify({
+          type: Messages.ADD_SCORE,
+          data: { score: selectedScore },
+        }),
+      );
+    }
+  }, [selectedScore, ws]);
+
   return (
-    <section className="flex flex-1 flex-col justify-around gap-10 rounded-xl border">
-      <section className="flex flex-col items-center justify-center">
-        <h2 className="text-5xl font-bold">Video name</h2>
-        <div className="flex aspect-video w-full max-w-5xl bg-slate-300 shadow-2xl transition-transform">
-          Video
+    <section className="flex flex-1 flex-col rounded-xl">
+      <section className="flex grow flex-col items-center justify-center gap-5">
+        <h2 className="text-5xl font-bold">{game.state.actualItem?.name}</h2>
+        <div className="flex aspect-video w-full max-w-5xl shadow-2xl transition-transform">
+          <lite-youtube
+            videoid={videoId}
+            videotitle={game.state.actualItem?.name}
+            style={{ borderRadius: "0.25rem" }}
+          />
         </div>
       </section>
 
-      <div className="flex flex-wrap items-center justify-center gap-5 px-10">
-        {Array.from({ length: 10 }).map((_, index) => (
-          <Button
-            key={index + 1}
-            className="h-24 w-24 border text-3xl shadow-md transition-transform hover:scale-110"
-            variant="ghost"
-          >
-            {index + 1}
-          </Button>
-        ))}
+      <div className="relative flex grow flex-col flex-wrap justify-between px-10">
+        <div className="flex flex-wrap justify-center gap-5">
+          {Array.from({ length: 10 }).map((_, index) => (
+            <Button
+              key={index + 1}
+              className={cn(
+                "transition-scale h-20 w-20 select-none border text-3xl shadow-md hover:scale-110",
+                selectedScore === index + 1 && "scale-110 bg-accent",
+              )}
+              variant="ghost"
+              onClick={() => setSelectedScore(index + 1)}
+            >
+              {index + 1}
+            </Button>
+          ))}
+        </div>
+
+        <p className="text-3xl">
+          {alreadyVoted}/{activePlayers}
+        </p>
+
+        {alreadyVoted === activePlayers && (
+          <p className="text-3xl">Time left: {remainingTime}</p>
+        )}
       </div>
     </section>
   );

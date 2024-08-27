@@ -11,7 +11,7 @@ export interface Player {
 }
 
 export interface PlayerScore {
-  player: Player;
+  player: string;
   score: number;
 }
 
@@ -35,6 +35,7 @@ export enum Messages {
   UPDATE_SERVER = "updateServer",
   UPDATE_ROOM_NAME = "updateRoomName",
   START_GAME = "startGame",
+  ADD_SCORE = "addScore",
   ADD_ITEM = "addItem",
   DELETE_ITEM = "deleteItem",
   ERROR = "error",
@@ -48,11 +49,16 @@ export type ConnectionData = {
   roomCode: string;
 };
 
+export type State = {
+  actualItem: Item;
+  actualItemIndex: number;
+};
+
 export interface Game {
   id?: string;
   name?: string;
   scene: Scene;
   players: Player[];
   list: Item[];
-  state: boolean;
+  state: State;
 }

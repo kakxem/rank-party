@@ -144,10 +144,69 @@ const server = Bun.serve<ConnectionData>({
 
       if (type === Messages.START_GAME) {
         if (game) {
+          if (game.list.length < 2) {
+            return sendError({ ws, message: "Not enough items" });
+          }
+
           game.scene = Scene.GAME;
+          const randomList = game.list.slice().sort(() => Math.random() - 0.5);
+          game.list = randomList;
+          game.state = { actualItem: randomList[0], actualItemIndex: 0 };
+
           updateAndPublishGame({
             roomCode,
-            updatedGame: { scene: game.scene },
+            updatedGame: {
+              scene: game.scene,
+              state: game.state,
+              list: game.list,
+            },
+            server,
+          });
+        }
+      }
+
+      if (type === Messages.ADD_SCORE) {
+        if (game) {
+          const { score } = data;
+          const { actualItem } = game.state;
+
+          const oldScore = actualItem.score.findIndex(
+            (item) => item.player === player.id,
+          );
+          if (oldScore !== -1) {
+            actualItem.score[oldScore].score = score;
+          } else {
+            actualItem.score.push({
+              player: player.id,
+              score,
+            });
+          }
+
+          const activePlayers = game.players.filter(
+            (item) => item.active,
+          ).length;
+          if (actualItem.score.length === activePlayers) {
+            setTimeout(() => {
+              if (game) {
+                game.state = {
+                  actualItem: game.list[game.state.actualItemIndex + 1],
+                  actualItemIndex: game.state.actualItemIndex + 1,
+                };
+              }
+
+              // TODO: Check if we have items left
+
+              updateAndPublishGame({
+                roomCode,
+                updatedGame: { state: game.state },
+                server,
+              });
+            }, 10000);
+          }
+
+          updateAndPublishGame({
+            roomCode,
+            updatedGame: { state: { ...game.state, actualItem } },
             server,
           });
         }
@@ -162,6 +221,7 @@ const server = Bun.serve<ConnectionData>({
           item.id === player.id ? { ...item, active: false } : item,
         );
 
+        // TODO: Check if all the players left the game to remove the game
         // TODO: Handle ADMIN role transfer if necessary
 
         ws.unsubscribe(roomName);
