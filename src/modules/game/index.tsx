@@ -13,6 +13,7 @@ export const Game = () => {
   const game = useAtomValue(gameAtom);
   const ws = useAtomValue(wsAtom);
   const [videoId, setVideoId] = useState("");
+  const [lastItem, setLastItem] = useState<string | null>(null);
   const [activePlayers, setActivePlayers] = useState(0);
   const [selectedScore, setSelectedScore] = useState<number | null>(null);
   const [remainingTime, setRemainingTime] = useState(10);
@@ -20,11 +21,14 @@ export const Game = () => {
   const alreadyVoted = game?.state?.actualItem?.score?.length ?? 0;
 
   useEffect(() => {
-    if (game.state.actualItem) {
+    const actualItem = game?.state?.actualItem;
+
+    // Reset if the actual item changes
+    if (actualItem && actualItem.id !== lastItem) {
       // Set the video id
-      if (YOUTUBE_REGEX.test(game.state.actualItem.link)) {
-        const id = game.state.actualItem.link.match(YOUTUBE_REGEX)?.[1];
-        return setVideoId(id ?? "");
+      if (YOUTUBE_REGEX.test(actualItem.link)) {
+        const id = actualItem.link.match(YOUTUBE_REGEX)?.[1];
+        setVideoId(id ?? "");
       }
 
       // Restart the game
@@ -32,8 +36,9 @@ export const Game = () => {
       setActivePlayers(activePlayers.length);
       setRemainingTime(10);
       setSelectedScore(null);
+      setLastItem(actualItem.id);
     }
-  }, [game.state.actualItem, game.players]);
+  }, [game.players, game?.state?.actualItem, lastItem]);
 
   useEffect(() => {
     // Set the remaining time
