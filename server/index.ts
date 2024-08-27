@@ -51,7 +51,7 @@ const server = Bun.serve<ConnectionData>({
     console.log(connectionData);
 
     if (pathname === "/join") {
-      const game = games.find((game) => game.id === connectionData.roomCode);
+      const { game } = getGameInfo(connectionData.roomCode);
 
       if (!game) {
         console.log("game not found");
@@ -94,6 +94,8 @@ const server = Bun.serve<ConnectionData>({
       const { type, data } = JSON.parse(message);
       const { game } = getGameInfo(roomCode);
 
+      if (!game) return sendError({ ws, message: "Game not found?" });
+
       if (type === Messages.UPDATE_ROOM_NAME) {
         const { newName } = data;
         updateAndPublishGame({
@@ -106,131 +108,121 @@ const server = Bun.serve<ConnectionData>({
       if (type === Messages.ADD_ITEM) {
         const { name, link } = data;
 
-        if (game) {
-          const isDuplicate = game.list.some(
-            (item) => item.name === name || item.link === link,
-          );
-          if (isDuplicate) {
-            return sendError({ ws, message: "Item already exists" });
-          }
-
-          game.list.push({
-            id: `${name}-${link}`,
-            name,
-            link,
-            createdBy: player.id,
-            score: [],
-          });
-          updateAndPublishGame({
-            roomCode,
-            updatedGame: { list: game.list },
-            server,
-          });
+        const isDuplicate = game.list.some(
+          (item) => item.name === name || item.link === link,
+        );
+        if (isDuplicate) {
+          return sendError({ ws, message: "Item already exists" });
         }
+
+        game.list.push({
+          id: `${name}-${link}`,
+          name,
+          link,
+          createdBy: player.id,
+          score: [],
+        });
+        updateAndPublishGame({
+          roomCode,
+          updatedGame: { list: game.list },
+          server,
+        });
       }
 
       if (type === Messages.DELETE_ITEM) {
         const { id } = data;
 
-        if (game) {
-          game.list = game.list.filter((item) => item.id !== id);
-          updateAndPublishGame({
-            roomCode,
-            updatedGame: { list: game.list },
-            server,
-          });
-        }
+        game.list = game.list.filter((item) => item.id !== id);
+        updateAndPublishGame({
+          roomCode,
+          updatedGame: { list: game.list },
+          server,
+        });
       }
 
       if (type === Messages.START_GAME) {
-        if (game) {
-          if (game.list.length < 2) {
-            return sendError({ ws, message: "Not enough items" });
-          }
-
-          game.scene = Scene.GAME;
-          const randomList = game.list.slice().sort(() => Math.random() - 0.5);
-          game.list = randomList;
-          game.state = { actualItem: randomList[0], actualItemIndex: 0 };
-
-          updateAndPublishGame({
-            roomCode,
-            updatedGame: {
-              scene: game.scene,
-              state: game.state,
-              list: game.list,
-            },
-            server,
-          });
+        if (game.list.length < 2) {
+          return sendError({ ws, message: "Not enough items" });
         }
+
+        game.scene = Scene.GAME;
+        const randomList = game.list.slice().sort(() => Math.random() - 0.5);
+        game.list = randomList;
+        game.state = { actualItem: randomList[0], actualItemIndex: 0 };
+
+        updateAndPublishGame({
+          roomCode,
+          updatedGame: {
+            scene: game.scene,
+            state: game.state,
+            list: game.list,
+          },
+          server,
+        });
       }
 
       if (type === Messages.ADD_SCORE) {
-        if (game) {
-          const { score } = data;
-          const { actualItem } = game.state;
+        const { score } = data;
+        const { actualItem } = game.state;
 
-          const oldScore = actualItem.score.findIndex(
-            (item) => item.player === player.id,
-          );
-          if (oldScore !== -1) {
-            actualItem.score[oldScore].score = score;
-          } else {
-            actualItem.score.push({
-              player: player.id,
-              score,
-            });
-          }
-
-          const activePlayers = game.players.filter(
-            (item) => item.active,
-          ).length;
-          if (actualItem.score.length === activePlayers) {
-            setTimeout(() => {
-              if (game) {
-                game.state = {
-                  actualItem: game.list[game.state.actualItemIndex + 1],
-                  actualItemIndex: game.state.actualItemIndex + 1,
-                };
-              }
-
-              // TODO: Check if we have items left
-
-              updateAndPublishGame({
-                roomCode,
-                updatedGame: { state: game.state },
-                server,
-              });
-            }, 10000);
-          }
-
-          updateAndPublishGame({
-            roomCode,
-            updatedGame: { state: { ...game.state, actualItem } },
-            server,
+        const oldScore = actualItem.score.findIndex(
+          (item) => item.player === player.id,
+        );
+        if (oldScore !== -1) {
+          actualItem.score[oldScore].score = score;
+        } else {
+          actualItem.score.push({
+            player: player.id,
+            score,
           });
         }
+
+        const activePlayers = game.players.filter((item) => item.active).length;
+        if (actualItem.score.length === activePlayers) {
+          setTimeout(() => {
+            if (game) {
+              game.state = {
+                actualItem: game.list[game.state.actualItemIndex + 1],
+                actualItemIndex: game.state.actualItemIndex + 1,
+              };
+            }
+
+            // TODO: Check if we have items left
+
+            updateAndPublishGame({
+              roomCode,
+              updatedGame: { state: game.state },
+              server,
+            });
+          }, 10000);
+        }
+
+        updateAndPublishGame({
+          roomCode,
+          updatedGame: { state: { ...game.state, actualItem } },
+          server,
+        });
       }
     },
     close(ws) {
       const { roomCode, player } = ws.data;
       const { game, roomName } = getGameInfo(roomCode);
 
-      if (game) {
-        game.players = game.players.map((item) =>
-          item.id === player.id ? { ...item, active: false } : item,
-        );
+      if (!game) return;
 
-        // TODO: Check if all the players left the game to remove the game
-        // TODO: Handle ADMIN role transfer if necessary
+      game.players = game.players.map((item) =>
+        item.id === player.id ? { ...item, active: false } : item,
+      );
 
-        ws.unsubscribe(roomName);
-        updateAndPublishGame({
-          roomCode,
-          updatedGame: game,
-          server,
-        });
-      }
+      // TODO: Check if all the players left the game to remove the game
+      // TODO: Handle ADMIN role transfer if necessary
+
+      ws.unsubscribe(roomName);
+      updateAndPublishGame({
+        roomCode,
+        updatedGame: game,
+        server,
+      });
     },
   },
 });
