@@ -184,7 +184,10 @@ const server = Bun.serve<ConnectionData>({
               actualItem: game.state.actualItem + 1,
             };
 
-            // TODO: Check if we have items left
+            // If the last item was reached, end the game
+            if (game.state.actualItem === game.list.length) {
+              game.scene = Scene.RESULT;
+            }
 
             updateAndPublishGame({
               roomCode,
