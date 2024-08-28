@@ -148,7 +148,7 @@ const server = Bun.serve<ConnectionData>({
         game.scene = Scene.GAME;
         const randomList = game.list.slice().sort(() => Math.random() - 0.5);
         game.list = randomList;
-        game.state = { actualItem: randomList[0], actualItemIndex: 0 };
+        game.state = { actualItem: 0 };
 
         updateAndPublishGame({
           roomCode,
@@ -163,7 +163,7 @@ const server = Bun.serve<ConnectionData>({
 
       if (type === Messages.ADD_SCORE) {
         const { score } = data;
-        const { actualItem } = game.state;
+        const actualItem = game.list[game.state.actualItem];
 
         const oldScore = actualItem.score.findIndex(
           (item) => item.player === player.id,
@@ -180,18 +180,15 @@ const server = Bun.serve<ConnectionData>({
         const activePlayers = game.players.filter((item) => item.active).length;
         if (actualItem.score.length === activePlayers) {
           setTimeout(() => {
-            if (game) {
-              game.state = {
-                actualItem: game.list[game.state.actualItemIndex + 1],
-                actualItemIndex: game.state.actualItemIndex + 1,
-              };
-            }
+            game.state = {
+              actualItem: game.state.actualItem + 1,
+            };
 
             // TODO: Check if we have items left
 
             updateAndPublishGame({
               roomCode,
-              updatedGame: { state: game.state },
+              updatedGame: game,
               server,
             });
           }, 10000);
@@ -199,7 +196,7 @@ const server = Bun.serve<ConnectionData>({
 
         updateAndPublishGame({
           roomCode,
-          updatedGame: { state: { ...game.state, actualItem } },
+          updatedGame: game,
           server,
         });
       }

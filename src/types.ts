@@ -50,8 +50,7 @@ export type ConnectionData = {
 };
 
 export type State = {
-  actualItem: Item;
-  actualItemIndex: number;
+  actualItem: number;
 };
 
 export interface Game {

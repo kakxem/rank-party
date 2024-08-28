@@ -18,11 +18,10 @@ export const Game = () => {
   const [selectedScore, setSelectedScore] = useState<number | null>(null);
   const [remainingTime, setRemainingTime] = useState(10);
 
-  const alreadyVoted = game?.state?.actualItem?.score?.length ?? 0;
+  const alreadyVoted = game?.list[game?.state?.actualItem]?.score?.length;
+  const actualItem = game?.list[game?.state?.actualItem];
 
   useEffect(() => {
-    const actualItem = game?.state?.actualItem;
-
     // Reset if the actual item changes
     if (actualItem && actualItem.id !== lastItem) {
       // Set the video id
@@ -38,7 +37,7 @@ export const Game = () => {
       setSelectedScore(null);
       setLastItem(actualItem.id);
     }
-  }, [game.players, game?.state?.actualItem, lastItem]);
+  }, [actualItem, game.players, lastItem]);
 
   useEffect(() => {
     // Set the remaining time
@@ -65,11 +64,11 @@ export const Game = () => {
   return (
     <section className="flex flex-1 flex-col rounded-xl">
       <section className="flex grow flex-col items-center justify-center gap-5">
-        <h2 className="text-5xl font-bold">{game.state.actualItem?.name}</h2>
+        <h2 className="text-5xl font-bold">{actualItem.name}</h2>
         <div className="flex aspect-video w-full max-w-5xl shadow-2xl transition-transform">
           <lite-youtube
             videoid={videoId}
-            videotitle={game.state.actualItem?.name}
+            videotitle={actualItem.name}
             style={{ borderRadius: "0.25rem" }}
           />
         </div>
