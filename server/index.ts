@@ -148,7 +148,7 @@ const server = Bun.serve<ConnectionData>({
         game.scene = Scene.GAME;
         const randomList = game.list.slice().sort(() => Math.random() - 0.5);
         game.list = randomList;
-        game.state = { actualItem: 0 };
+        game.state = { actualItem: 0, executingTimeout: false };
 
         updateAndPublishGame({
           roomCode,
@@ -178,10 +178,15 @@ const server = Bun.serve<ConnectionData>({
         }
 
         const activePlayers = game.players.filter((item) => item.active).length;
-        if (actualItem.score.length === activePlayers) {
+        if (
+          actualItem.score.length === activePlayers &&
+          !game.state.executingTimeout
+        ) {
+          game.state.executingTimeout = true;
           setTimeout(() => {
             game.state = {
               actualItem: game.state.actualItem + 1,
+              executingTimeout: false,
             };
 
             // If the last item was reached, end the game

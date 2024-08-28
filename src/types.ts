@@ -51,6 +51,7 @@ export type ConnectionData = {
 
 export type State = {
   actualItem: number;
+  executingTimeout: boolean;
 };
 
 export interface Game {
