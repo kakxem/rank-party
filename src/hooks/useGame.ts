@@ -11,14 +11,8 @@ export const gameAtom = atom<Game>({
   players: [],
   list: [],
   state: {
-    actualItem: {
-      id: "",
-      name: "",
-      link: "",
-      createdBy: "",
-      score: [],
-    },
-    actualItemIndex: 0,
+    actualItem: 0,
+    executingTimeout: false,
   },
 });
 

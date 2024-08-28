@@ -22,7 +22,10 @@ export const createNewGame = ({ player, roomCode }: ConnectionData): Game => {
     scene: Scene.LOBBY,
     players: [newPlayer],
     list: [],
-    state: false,
+    state: {
+      actualItem: 0,
+      executingTimeout: false,
+    },
   };
 };
 
