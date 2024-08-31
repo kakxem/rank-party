@@ -117,33 +117,17 @@ export const ItemsTable = () => {
       },
       cell: ({ row }) => {
         const name = row.getValue("name") as string;
-        return <div className="max-w-md truncate">{name}</div>;
-      },
-    },
-    {
-      accessorKey: "link",
-      header: ({ column }) => {
+        const link = row.original.link;
+
         return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Link
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const link = row.getValue("link") as string;
-        return (
-          <div className="max-w-xs truncate">
+          <div className="max-w-lg truncate">
             <a
               className="truncate underline"
               href={link}
               target="_blank"
               rel="noreferrer"
             >
-              {link}
+              {name}
             </a>
           </div>
         );

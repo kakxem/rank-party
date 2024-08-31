@@ -6,7 +6,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { gameAtom } from "@/hooks/useGame";
-import type { Item } from "@/types";
+import type { Item, PlayerScore } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAtomValue } from "jotai";
 
@@ -47,23 +47,17 @@ export const ResultsTable = () => {
       header: "Name",
       cell: ({ row }) => {
         const name = row.getValue("name") as string;
-        return <div className="max-w-md truncate">{name}</div>;
-      },
-    },
-    {
-      accessorKey: "link",
-      header: "Link",
-      cell: ({ row }) => {
-        const link = row.getValue("link") as string;
+        const link = row.original.link;
+
         return (
-          <div className="max-w-xs truncate">
+          <div className="max-w-lg truncate">
             <a
               className="truncate underline"
               href={link}
               target="_blank"
               rel="noreferrer"
             >
-              {link}
+              {name}
             </a>
           </div>
         );
@@ -73,26 +67,23 @@ export const ResultsTable = () => {
       accessorKey: "score",
       header: "Score",
       cell: ({ row }) => {
-        const scores = row.getValue("score") as {
-          player: string;
-          score: number;
-        }[];
+        const scores = row.getValue("score") as PlayerScore[];
 
         // Calculate the average score
         const totalScores = scores.reduce((acc, curr) => acc + curr.score, 0);
         const averageScore = scores.length ? totalScores / scores.length : 0;
 
-        // Encuentra el jugador correspondiente al identificador
+        // Find the player corresponding to the identifier
         const findPlayerById = (id: string) =>
           game.players.find((player) => player.id === id);
 
-        // Ordena las puntuaciones en orden descendente por puntuación
+        // Sort the scores in descending order by score
         const sortedScores = scores.sort((a, b) => b.score - a.score);
 
-        // Mapea los valores de la puntuación a un array que contiene el nombre y la puntuación
+        // Create an array of objects containing the name and score
         const tooltipContent = sortedScores.map((s) => {
           const player = findPlayerById(s.player);
-          const playerName = player ? player.name : "Unknown Player"; // Reemplaza 'Unknown Player' si el jugador no se encuentra
+          const playerName = player ? player.name : "Unknown Player"; // Replace 'Unknown Player' if the player is not found
 
           return (
             <div key={s.player}>
