@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import {
   Tooltip,
@@ -9,6 +10,7 @@ import { gameAtom } from "@/hooks/useGame";
 import type { Item, PlayerScore } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAtomValue } from "jotai";
+import { Download } from "lucide-react";
 
 export const ResultsTable = () => {
   const game = useAtomValue(gameAtom);
@@ -28,6 +30,41 @@ export const ResultsTable = () => {
       averageScore: calculateAverageScore(item.score),
     }))
     .sort((a, b) => b.averageScore - a.averageScore); // Sort by averageScore in descending order
+
+  const processResultsData = (data: Item[]) => {
+    const csvData = data.map((item) => {
+      // Get the scores sorted by player name
+      const scores = item.score
+        .sort((a, b) => a.player.localeCompare(b.player))
+        .map((score) => score.score);
+
+      const averageScore = calculateAverageScore(item.score);
+      const data = `${item.name},${item.link},${item.createdBy},${averageScore},${scores.join(",")}`;
+
+      return data;
+    });
+
+    // Get the player names sorted alphabetically
+    const players = game.players
+      .map((player) => player.name)
+      .sort((a, b) => a.localeCompare(b));
+    const csvHeader = `Name,Link,Created By,Average Score,${players.join(",")}`;
+    csvData.unshift(csvHeader);
+
+    return csvData.join("\n");
+  };
+
+  const downloadResults = () => {
+    // Download in CSV format
+    const csvData = processResultsData(processedData);
+    const csvFile = new Blob([csvData], { type: "text/csv" });
+    const csvUrl = URL.createObjectURL(csvFile);
+    const link = document.createElement("a");
+    link.href = csvUrl;
+    link.download = "results.csv";
+    link.click();
+    URL.revokeObjectURL(csvUrl);
+  };
 
   const columns: ColumnDef<Item>[] = [
     {
@@ -110,6 +147,13 @@ export const ResultsTable = () => {
 
   return (
     <section className="h-full w-full p-5">
+      <header className="flex justify-between">
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={downloadResults}>
+            <Download className="mr-1 h-4 w-4" /> Download
+          </Button>
+        </div>
+      </header>
       <div className="py-5">
         <DataTable columns={columns} data={processedData} />
       </div>
