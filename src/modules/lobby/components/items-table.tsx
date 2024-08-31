@@ -2,15 +2,18 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Input } from "@/components/ui/input";
 import { gameAtom, wsAtom } from "@/hooks/useGame";
+import { YOUTUBE_REGEX } from "@/lib/regex";
 import type { Item } from "@/types";
 import { Messages } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAtomValue } from "jotai";
 import { ArrowUpDown, FileDown, FileUp, Trash2 } from "lucide-react";
+import { useState } from "react";
 
 export const ItemsTable = () => {
   const ws = useAtomValue(wsAtom);
   const game = useAtomValue(gameAtom);
+  const [name, setName] = useState("");
 
   const handleAddItem = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,10 +26,11 @@ export const ItemsTable = () => {
       ws.send(
         JSON.stringify({
           type: Messages.ADD_ITEM,
-          data: { name: name, link: link },
+          data: { name, link },
         }),
       );
       (e.target as HTMLFormElement).reset();
+      setName("");
     }
   };
 
@@ -83,6 +87,18 @@ export const ItemsTable = () => {
     link.download = "data.json";
     link.click();
     URL.revokeObjectURL(url);
+  };
+
+  const getYoutubeName = async (link: string) => {
+    if (!YOUTUBE_REGEX.test(link)) return;
+    const id = link.match(YOUTUBE_REGEX)?.[1];
+
+    const url = `https://noembed.com/embed?url=https://www.youtube.com/watch?v=${id}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data.title) {
+      setName(data.title);
+    }
   };
 
   const columns: ColumnDef<Item>[] = [
@@ -182,19 +198,24 @@ export const ItemsTable = () => {
 
         <form className="flex gap-2" onSubmit={handleAddItem}>
           <Input
+            type="url"
+            name="link"
+            placeholder="Item link"
+            autoComplete="off"
+            aria-autocomplete="none"
+            onChange={(e) => {
+              getYoutubeName(e.target.value);
+            }}
+          />
+          <Input
             type="text"
             name="name"
             className="max-w-xs"
             placeholder="Item name"
             autoComplete="off"
             aria-autocomplete="none"
-          />
-          <Input
-            type="url"
-            name="link"
-            placeholder="Item link"
-            autoComplete="off"
-            aria-autocomplete="none"
+            onChange={(e) => setName(e.target.value)}
+            value={name}
           />
           <Button type="submit">Add</Button>
         </form>

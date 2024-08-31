@@ -1,13 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { gameAtom, wsAtom } from "@/hooks/useGame";
+import { YOUTUBE_REGEX } from "@/lib/regex";
 import { cn } from "@/lib/utils";
 import { Messages } from "@/types";
 import "@justinribeiro/lite-youtube";
 import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
-
-const YOUTUBE_REGEX =
-  /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
 
 export const Game = () => {
   const game = useAtomValue(gameAtom);
