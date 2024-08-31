@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { gameAtom } from "@/hooks/useGame";
-import { Scene } from "@/types";
 import { useAtomValue } from "jotai";
 import { useState } from "react";
 
@@ -40,16 +39,14 @@ export const Players = () => {
       </ul>
 
       <footer className="flex justify-center">
-        {game.scene !== Scene.MAIN && (
-          <Button
-            className="text-md w-full font-bold"
-            onClick={() => {
-              navigator.clipboard.writeText(game.id ?? "???");
-            }}
-          >
-            Copy room code: {game.id}
-          </Button>
-        )}
+        <Button
+          className="text-md w-full font-bold"
+          onClick={() => {
+            navigator.clipboard.writeText(game.id ?? "???");
+          }}
+        >
+          Copy room code: {game.id}
+        </Button>
       </footer>
     </aside>
   );
