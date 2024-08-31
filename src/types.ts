@@ -37,6 +37,7 @@ export enum Messages {
   START_GAME = "startGame",
   ADD_SCORE = "addScore",
   ADD_ITEM = "addItem",
+  IMPORT_LIST = "importList",
   DELETE_ITEM = "deleteItem",
   ERROR = "error",
 }

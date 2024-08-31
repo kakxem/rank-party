@@ -6,7 +6,7 @@ import type { Item } from "@/types";
 import { Messages } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAtomValue } from "jotai";
-import { ArrowUpDown, Trash2 } from "lucide-react";
+import { ArrowUpDown, FileDown, FileUp, Trash2 } from "lucide-react";
 
 export const ItemsTable = () => {
   const ws = useAtomValue(wsAtom);
@@ -39,6 +39,50 @@ export const ItemsTable = () => {
         }),
       );
     }
+  };
+
+  const handleImportList = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    // Show file dialog
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json";
+    input.click();
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = async () => {
+        if (!reader.result) return;
+        const data = JSON.parse(reader.result as string);
+        if (!data) return;
+        if (ws) {
+          ws.send(
+            JSON.stringify({
+              type: Messages.IMPORT_LIST,
+              data: { list: data },
+            }),
+          );
+        }
+      };
+    };
+  };
+
+  const handleExportList = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    const data = game.list;
+
+    // JSON
+    const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "data.json";
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   const columns: ColumnDef<Item>[] = [
@@ -126,7 +170,16 @@ export const ItemsTable = () => {
 
   return (
     <section className="h-full w-full p-5">
-      <header>
+      <header className="flex flex-col gap-3">
+        <div className="flex gap-1">
+          <Button variant="outline" onClick={handleImportList}>
+            <FileDown className="mr-1 h-4 w-4" /> Import
+          </Button>
+          <Button variant="outline" onClick={handleExportList}>
+            <FileUp className="mr-1 h-4 w-4" /> Export
+          </Button>
+        </div>
+
         <form className="flex gap-2" onSubmit={handleAddItem}>
           <Input
             type="text"

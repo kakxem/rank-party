@@ -129,6 +129,16 @@ const server = Bun.serve<ConnectionData>({
         });
       }
 
+      if (type === Messages.IMPORT_LIST) {
+        const { list } = data;
+        game.list = list;
+        updateAndPublishGame({
+          roomCode,
+          updatedGame: game,
+          server,
+        });
+      }
+
       if (type === Messages.DELETE_ITEM) {
         const { id } = data;
 
