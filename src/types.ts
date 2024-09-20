@@ -22,7 +22,7 @@ export interface Item {
   createdBy: string;
   score: PlayerScore[];
 }
-
+export type ResultItem = Item & { averageScore: number };
 export enum Scene {
   MAIN = "main",
   LOBBY = "lobby",
