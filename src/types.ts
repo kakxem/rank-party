@@ -48,6 +48,7 @@ export type ConnectionData = {
     name: string;
   };
   roomCode: string;
+  join?: boolean;
 };
 
 export type State = {

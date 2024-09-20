@@ -53,28 +53,16 @@ const updateAndPublishGame = ({
   }
 };
 
-router.get("/join", (ctx) => {
-  const connectionData = getConnectionData(ctx.request.url);
-  const { game } = getGameInfo(connectionData.roomCode);
-
-  if (!game) {
-    ctx.response.status = 404;
-    return;
-  }
-
-  ctx.response.status = 200;
-});
-
 router.get("/", async (ctx) => {
   const socket = (await ctx.upgrade()) as WebSocket & { data: ConnectionData };
   const connectionData = getConnectionData(ctx.request.url);
   socket.data = connectionData;
 
   socket.onopen = () => {
-    const { roomCode, player } = connectionData;
+    const { roomCode, player, join } = connectionData;
     const { game, index } = getGameInfo(roomCode);
 
-    if (!game && roomCode) {
+    if (!game && join) {
       // close the socket
       sendError({ ws: socket, message: "Game not found" });
       return socket.close();

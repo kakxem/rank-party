@@ -59,6 +59,7 @@ export const Main = () => {
     const data: ConnectionData = {
       player: createPlayer(),
       roomCode,
+      join: true,
     };
 
     const ws = new WebSocket(
