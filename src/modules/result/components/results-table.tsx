@@ -1,4 +1,5 @@
 import { DownloadButton } from "@/components/download-button";
+import { ExportButton } from "@/components/export-button";
 import { DataTable } from "@/components/ui/data-table";
 import {
   Tooltip,
@@ -106,6 +107,7 @@ export const ResultsTable = () => {
   return (
     <section className="h-full w-full p-5">
       <header className="flex justify-between">
+        <ExportButton />
         <DownloadButton />
       </header>
       <div className="py-5">
