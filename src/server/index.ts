@@ -1,6 +1,5 @@
 import { Application, Router } from "https://deno.land/x/oak@v17.0.0/mod.ts";
-import type { ConnectionData } from "../src/types.ts";
-import { Messages, Scene, type Game } from "../src/types.ts";
+import { Messages, Scene, type ConnectionData, type Game } from "../types.ts";
 import { createNewGame, joinGame, sendError } from "./actions.ts";
 
 const games: Game[] = [];
@@ -12,7 +11,7 @@ const connectedClients = new Map<
 >();
 
 const app = new Application();
-const port = 5000;
+const port = 443;
 const router = new Router();
 
 const getConnectionData = (url: URL) => {

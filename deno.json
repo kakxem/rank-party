@@ -2,5 +2,11 @@
   "tasks": {
     "api:dev": "deno run --allow-net --watch ./server/index.ts",
     "api:prod": "deno run --allow-net ./server/index.ts"
+  },
+  "deploy": {
+    "project": "34866b88-42a8-4253-974d-286ffbad0227",
+    "exclude": ["**/node_modules"],
+    "include": ["**/src/server/**/*", "**/src/types.ts"],
+    "entrypoint": "src/server/index.ts"
   }
 }

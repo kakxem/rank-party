@@ -5,7 +5,7 @@ import {
   type ConnectionData,
   type Game,
   type Player,
-} from "../src/types.ts";
+} from "../types.ts";
 
 export const createNewGame = ({ player, roomCode }: ConnectionData): Game => {
   const newPlayer: Player = {
