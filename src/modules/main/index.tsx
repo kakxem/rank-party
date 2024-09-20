@@ -62,7 +62,7 @@ export const Main = () => {
     };
 
     const ws = new WebSocket(
-      `ws://localhost:5000/join?data=${JSON.stringify(data)}`,
+      `ws://localhost:5000?data=${JSON.stringify(data)}`,
     );
     setWs(ws);
   };

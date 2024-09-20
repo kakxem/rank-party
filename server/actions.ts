@@ -1,4 +1,3 @@
-import { ServerWebSocket } from "bun";
 import {
   Messages,
   Role,
@@ -6,7 +5,7 @@ import {
   type ConnectionData,
   type Game,
   type Player,
-} from "../src/types";
+} from "../src/types.ts";
 
 export const createNewGame = ({ player, roomCode }: ConnectionData): Game => {
   const newPlayer: Player = {
@@ -63,7 +62,7 @@ export const sendError = ({
   ws,
   message,
 }: {
-  ws: ServerWebSocket<ConnectionData>;
+  ws: WebSocket;
   message: string;
 }) => {
   ws.send(JSON.stringify({ type: Messages.ERROR, data: { message } }));

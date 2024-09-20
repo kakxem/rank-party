@@ -1,0 +1,6 @@
+{
+  "tasks": {
+    "api:dev": "deno run --allow-net --watch ./server/index.ts",
+    "api:prod": "deno run --allow-net ./server/index.ts"
+  }
+}
