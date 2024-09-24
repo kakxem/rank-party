@@ -1,7 +1,7 @@
 {
   "tasks": {
-    "api:dev": "deno run --allow-net --watch ./server/index.ts",
-    "api:prod": "deno run --allow-net ./server/index.ts"
+    "api:dev": "PORT=5000 deno run --allow-net --watch ./src/server/index.ts",
+    "api:prod": "deno run --allow-net ./src/server/index.ts"
   },
   "deploy": {
     "project": "34866b88-42a8-4253-974d-286ffbad0227",

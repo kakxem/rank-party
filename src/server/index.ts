@@ -11,7 +11,7 @@ const connectedClients = new Map<
 >();
 
 const app = new Application();
-const port = 443;
+const port = Deno.env.get("PORT") ?? 443;
 const router = new Router();
 
 const getConnectionData = (url: URL) => {
