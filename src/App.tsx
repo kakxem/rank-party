@@ -1,6 +1,6 @@
 import { Debug } from "@/components/debug";
 import { EditableRoomName } from "@/components/editable-room-name";
-import { Players } from "@/components/players";
+import { Sidebar } from "@/components/sidebar/sidebar";
 import { gameAtom, useGame } from "@/hooks/useGame";
 import { Game } from "@/modules/game";
 import { Lobby } from "@/modules/lobby";
@@ -22,7 +22,7 @@ function App() {
         </header>
 
         <main className="container flex h-full flex-1 gap-4 px-10 py-3">
-          {![Scene.MAIN, Scene.GAME].includes(game.scene) && <Players />}
+          {![Scene.MAIN, Scene.GAME].includes(game.scene) && <Sidebar />}
 
           {game.scene === Scene.MAIN && <Main />}
           {game.scene === Scene.LOBBY && <Lobby />}

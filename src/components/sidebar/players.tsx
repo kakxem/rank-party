@@ -8,10 +8,8 @@ export const Players = () => {
   const [showInactive, setShowInactive] = useState(false);
 
   return (
-    <aside className="hidden max-w-sm flex-1 flex-col gap-3 rounded-xl bg-slate-100 p-5 sm:flex dark:bg-slate-900">
-      <header className="flex justify-between">
-        <h2 className="flex items-center text-xl font-bold">Players</h2>
-
+    <div>
+      <header>
         <Button onClick={() => setShowInactive(!showInactive)}>
           {showInactive ? "Hide inactive" : "Show inactive"}
         </Button>
@@ -48,6 +46,6 @@ export const Players = () => {
           Copy room code: {game.id}
         </Button>
       </footer>
-    </aside>
+    </div>
   );
 };
