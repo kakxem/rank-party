@@ -8,7 +8,7 @@ export const Players = () => {
   const [showInactive, setShowInactive] = useState(false);
 
   return (
-    <div>
+    <div className="flex h-full flex-col gap-3">
       <header>
         <Button onClick={() => setShowInactive(!showInactive)}>
           {showInactive ? "Hide inactive" : "Show inactive"}
