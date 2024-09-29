@@ -15,7 +15,7 @@ export const Players = () => {
         </Button>
       </header>
 
-      <ul className="flex flex-1 flex-col gap-3">
+      <ul className="flex flex-1 flex-col gap-3 overflow-y-auto">
         {game.players.map((player) => {
           if (!showInactive && !player.active) return null;
 

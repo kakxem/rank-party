@@ -17,10 +17,10 @@ export const Sidebar = () => {
             Settings
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="players" className="flex-1">
+        <TabsContent value="players" className="flex-1 overflow-y-auto">
           <Players />
         </TabsContent>
-        <TabsContent value="settings" className="flex-1">
+        <TabsContent value="settings" className="flex-1 overflow-y-auto">
           <Settings />
         </TabsContent>
       </Tabs>

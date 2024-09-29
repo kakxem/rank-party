@@ -16,12 +16,12 @@ function App() {
 
   return (
     <>
-      <div className="flex min-h-screen flex-col">
-        <header className="flex items-center justify-center px-10 pt-5">
+      <div className="flex h-screen flex-col">
+        <header className="flex flex-shrink-0 items-center justify-center px-10 pt-5">
           <EditableRoomName />
         </header>
 
-        <main className="container flex h-full flex-1 gap-4 px-10 py-3">
+        <main className="container flex flex-grow gap-4 overflow-y-auto px-10 py-3">
           {![Scene.MAIN, Scene.GAME].includes(game.scene) && <Sidebar />}
 
           {game.scene === Scene.MAIN && <Main />}
@@ -30,7 +30,7 @@ function App() {
           {game.scene === Scene.RESULT && <Result />}
         </main>
 
-        <footer className="p-5">footer</footer>
+        <footer className="flex flex-shrink-0">footer</footer>
       </div>
 
       <Toaster richColors />
