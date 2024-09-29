@@ -127,7 +127,7 @@ export const ItemsTable = () => {
   ];
 
   return (
-    <section className="h-full w-full p-5">
+    <section className="flex flex-1 flex-col overflow-y-hidden p-5">
       <header className="flex flex-col gap-3">
         <div className="flex gap-1">
           <ImportButton />
@@ -160,7 +160,7 @@ export const ItemsTable = () => {
       </header>
 
       {/* Table */}
-      <div className="py-5">
+      <div className="mt-5 overflow-x-auto">
         <DataTable columns={columns} data={game.list} />
       </div>
     </section>
