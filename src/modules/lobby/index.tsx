@@ -16,7 +16,7 @@ export const Lobby = () => {
   };
 
   return (
-    <section className="flex flex-1 flex-col justify-between gap-3 rounded-xl bg-slate-100 p-5 dark:bg-slate-900">
+    <section className="flex flex-1 flex-col justify-between gap-3 rounded-xl">
       <ItemsTable />
       <Button onClick={handleStart}>Start</Button>
     </section>

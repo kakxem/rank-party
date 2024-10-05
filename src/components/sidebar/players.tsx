@@ -1,7 +1,10 @@
 import { showInactivePlayersAtom } from "@/components/sidebar/settings/atoms";
 import { Button } from "@/components/ui/button";
 import { gameAtom } from "@/hooks/useGame";
+import { cn } from "@/lib/utils";
+import { Role } from "@/types";
 import { useAtomValue } from "jotai";
+import { Crown, User } from "lucide-react";
 import { toast } from "sonner";
 
 export const Players = () => {
@@ -10,21 +13,38 @@ export const Players = () => {
 
   return (
     <div className="flex h-full flex-col gap-3">
-      <ul className="flex flex-1 flex-col gap-3 overflow-y-auto">
+      <ul className="mt-3 flex flex-1 flex-col gap-3 overflow-y-auto">
         {game.players.map((player) => {
           if (!showInactivePlayers && !player.active) return null;
           return (
             <li
               key={player.id}
-              className="flex h-20 items-center gap-3 rounded-md bg-slate-200 p-2 px-3 dark:bg-slate-800"
+              className={cn(
+                "flex h-16 items-center gap-3 rounded-md p-2 px-3",
+                player.active &&
+                  "bg-green-500/10 text-green-700 dark:bg-green-500/20 dark:text-green-300",
+                !player.active &&
+                  "bg-red-500/10 text-red-700 dark:bg-red-500/20 dark:text-red-300",
+                player.role === Role.ADMIN &&
+                  "bg-yellow-500/10 text-yellow-700 dark:bg-yellow-500/20 dark:text-yellow-300",
+              )}
+              aria-label={`${player.name}, ${player.role.toLowerCase()}, ${player.active ? "active" : "inactive"}`}
             >
-              <div className="flex rounded-md border-2 p-5 dark:border-slate-700">
-                {player.name.slice(0, 1).toUpperCase()}
+              <div className="flex flex-1 items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="text-current">
+                    {player.role === Role.ADMIN ? (
+                      <Crown size={24} aria-hidden="true" />
+                    ) : (
+                      <User size={24} aria-hidden="true" />
+                    )}
+                  </span>
+                  <span className="font-medium">{player.name}</span>
+                </div>
+                <span className="text-sm font-medium">
+                  {player.active ? "Active" : "Inactive"}
+                </span>
               </div>
-              <p className="flex flex-1 justify-between">
-                {player.name}
-                <span className="text-end">{player.active ? "🟢" : "🔴"}</span>
-              </p>
             </li>
           );
         })}
