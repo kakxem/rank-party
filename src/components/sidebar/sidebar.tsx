@@ -1,5 +1,5 @@
 import { Players } from "@/components/sidebar/players";
-import { Settings } from "@/components/sidebar/settings";
+import { Settings } from "@/components/sidebar/settings/settings";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Settings as SettingsIcon, Users as UsersIcon } from "lucide-react";
 
