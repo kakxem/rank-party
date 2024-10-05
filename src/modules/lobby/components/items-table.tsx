@@ -141,6 +141,7 @@ export const ItemsTable = () => {
             placeholder="Item link"
             autoComplete="off"
             aria-autocomplete="none"
+            required
             onChange={(e) => {
               getYoutubeName(e.target.value);
             }}
@@ -152,6 +153,7 @@ export const ItemsTable = () => {
             placeholder="Item name"
             autoComplete="off"
             aria-autocomplete="none"
+            required
             onChange={(e) => setName(e.target.value)}
             value={name}
           />
