@@ -2,6 +2,7 @@ import { showInactivePlayersAtom } from "@/components/sidebar/settings/atoms";
 import { Button } from "@/components/ui/button";
 import { gameAtom } from "@/hooks/useGame";
 import { useAtomValue } from "jotai";
+import { toast } from "sonner";
 
 export const Players = () => {
   const game = useAtomValue(gameAtom);
@@ -34,6 +35,7 @@ export const Players = () => {
           className="text-md w-full font-bold"
           onClick={() => {
             navigator.clipboard.writeText(game.id ?? "???");
+            toast.success("Room code copied to clipboard");
           }}
         >
           Copy room code: {game.id}
