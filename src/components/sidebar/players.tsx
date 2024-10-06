@@ -1,11 +1,9 @@
 import { showInactivePlayersAtom } from "@/components/sidebar/settings/atoms";
-import { Button } from "@/components/ui/button";
 import { gameAtom } from "@/hooks/useGame";
 import { cn } from "@/lib/utils";
 import { Role } from "@/types";
 import { useAtomValue } from "jotai";
 import { Crown, User } from "lucide-react";
-import { toast } from "sonner";
 
 export const Players = () => {
   const game = useAtomValue(gameAtom);
@@ -49,18 +47,6 @@ export const Players = () => {
           );
         })}
       </ul>
-
-      <footer className="flex justify-center">
-        <Button
-          className="text-md w-full font-bold"
-          onClick={() => {
-            navigator.clipboard.writeText(game.id ?? "???");
-            toast.success("Room code copied to clipboard");
-          }}
-        >
-          Copy room code: {game.id}
-        </Button>
-      </footer>
     </div>
   );
 };
