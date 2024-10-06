@@ -15,8 +15,8 @@ function App() {
   const game = useAtomValue(gameAtom);
 
   return (
-    <>
-      <div className="flex h-screen flex-col">
+    <div className="flex h-screen flex-col justify-center">
+      <div className="flex h-full max-h-[65rem] flex-col">
         <header className="flex flex-shrink-0 items-center justify-center px-10 pt-5">
           <EditableRoomName />
         </header>
@@ -35,7 +35,7 @@ function App() {
 
       <Toaster richColors />
       <Debug game={game} />
-    </>
+    </div>
   );
 }
 
