@@ -162,7 +162,7 @@ export const ItemsTable = () => {
       </header>
 
       {/* Table */}
-      <div className="mt-5 overflow-x-auto">
+      <div className="mt-5 h-full overflow-x-auto rounded-lg border">
         <DataTable columns={columns} data={game.list} />
       </div>
     </section>
