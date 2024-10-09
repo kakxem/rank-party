@@ -49,7 +49,7 @@ export const EditableRoomName = () => {
       suppressContentEditableWarning
       onBlur={handleInputChange}
       onKeyDown={handleKeyDown}
-      className="text-center text-4xl font-semibold"
+      className="truncate py-2 text-center text-7xl font-semibold focus:outline-none"
     >
       {game.name || "Party Rank Group"}
     </h1>
