@@ -15,12 +15,12 @@ function App() {
   const game = useAtomValue(gameAtom);
 
   return (
-    <div className="flex h-screen flex-col justify-center gap-10">
+    <div className="flex h-screen flex-col justify-center pt-5 sm:gap-10 md:pt-0">
       <header className="flex h-full max-h-[4rem] items-center justify-center">
         <EditableRoomName />
       </header>
 
-      <main className="container flex max-h-[65rem] flex-grow gap-4 overflow-y-auto px-10 py-3">
+      <main className="container flex max-h-[65rem] flex-grow gap-4 overflow-y-auto overflow-x-hidden px-3 pb-3 sm:px-10">
         {![Scene.MAIN, Scene.GAME].includes(game.scene) && <Sidebar />}
 
         {game.scene === Scene.MAIN && <Main />}

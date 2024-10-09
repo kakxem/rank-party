@@ -57,7 +57,7 @@ export const EditableRoomName = () => {
       onBlur={handleInputChange}
       onKeyDown={handleKeyDown}
       onClick={selectAllText}
-      className="truncate py-2 text-center text-7xl font-semibold focus:outline-none"
+      className="overflow-hidden py-2 text-center text-4xl font-semibold focus:outline-none md:text-5xl lg:text-6xl"
     >
       {game.name || "Party Rank Group"}
     </h1>
