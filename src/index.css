@@ -29,6 +29,11 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+
+    /* New scrollbar variables */
+    --scrollbar-track: 0 0% 94.5%;
+    --scrollbar-thumb: 0 0% 53.3%;
+    --scrollbar-thumb-hover: 0 0% 33.3%;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -57,6 +62,11 @@
       --chart-3: 30 80% 55%;
       --chart-4: 280 65% 60%;
       --chart-5: 340 75% 55%;
+
+      /* Dark mode scrollbar variables */
+      --scrollbar-track: 223 14% 10%;
+      --scrollbar-thumb: 223 14% 30%;
+      --scrollbar-thumb-hover: 223 14% 40%;
     }
   }
 }
@@ -67,5 +77,25 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  *::-webkit-scrollbar {
+    scrollbar-width: thin;
+    width: 10px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: hsl(var(--scrollbar-track));
+    border-radius: 5px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--scrollbar-thumb));
+    border-radius: 14px;
+    border: 3px solid hsl(var(--scrollbar-track));
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--scrollbar-thumb-hover));
   }
 }
