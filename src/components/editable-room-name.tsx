@@ -42,6 +42,13 @@ export const EditableRoomName = () => {
     }
   };
 
+  const selectAllText = () => {
+    if (roomNameRef.current && game.scene === Scene.LOBBY) {
+      roomNameRef.current.focus();
+      window.getSelection()?.selectAllChildren(roomNameRef.current);
+    }
+  };
+
   return (
     <h1
       contentEditable={game.scene === Scene.LOBBY}
@@ -49,6 +56,7 @@ export const EditableRoomName = () => {
       suppressContentEditableWarning
       onBlur={handleInputChange}
       onKeyDown={handleKeyDown}
+      onClick={selectAllText}
       className="truncate py-2 text-center text-7xl font-semibold focus:outline-none"
     >
       {game.name || "Party Rank Group"}
