@@ -16,33 +16,34 @@ function App() {
   const game = useAtomValue(gameAtom);
 
   return (
-    <div className="flex h-screen flex-col justify-center pt-5 lg:gap-10 lg:pt-0">
-      <header className="flex h-full max-h-[6rem] items-center justify-center">
-        <EditableRoomName />
-      </header>
+    <>
+      <div className="flex h-screen flex-col justify-center pt-5 lg:gap-10 lg:pt-0">
+        <header className="flex h-full max-h-[6rem] items-center justify-center">
+          <EditableRoomName />
+        </header>
 
-      <main className="container flex max-h-[65rem] flex-grow gap-4 overflow-y-auto overflow-x-hidden px-3 pb-3 sm:px-10">
-        {![Scene.MAIN, Scene.GAME].includes(game.scene) && (
-          <>
-            <div className="hidden lg:block lg:max-w-xs lg:flex-1">
-              <Sidebar />
-            </div>
+        <main className="container flex max-h-[65rem] flex-grow gap-4 overflow-y-auto overflow-x-hidden px-3 pb-3 sm:px-10">
+          {![Scene.MAIN, Scene.GAME].includes(game.scene) && (
+            <>
+              <div className="hidden lg:block lg:max-w-xs lg:flex-1">
+                <Sidebar />
+              </div>
 
-            <MobileSidebar />
-          </>
-        )}
+              <MobileSidebar />
+            </>
+          )}
 
-        {game.scene === Scene.MAIN && <Main />}
-        {game.scene === Scene.LOBBY && <Lobby />}
-        {game.scene === Scene.GAME && <Game />}
-        {game.scene === Scene.RESULT && <Result />}
-      </main>
+          {game.scene === Scene.MAIN && <Main />}
+          {game.scene === Scene.LOBBY && <Lobby />}
+          {game.scene === Scene.GAME && <Game />}
+          {game.scene === Scene.RESULT && <Result />}
+        </main>
 
-      <footer className="flex flex-shrink-0">footer</footer>
-
+        <footer className="flex flex-shrink-0">footer</footer>
+      </div>
       <Toaster richColors />
       <Debug game={game} />
-    </div>
+    </>
   );
 }
 
