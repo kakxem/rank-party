@@ -1,13 +1,15 @@
 import { Button } from "@/components/ui/button";
+import { useCurrentPlayer } from "@/hooks/useCurrentPlayer";
 import { gameAtom, wsAtom } from "@/hooks/useGame";
 import { ItemsTable } from "@/modules/lobby/components/items-table";
-import { Messages } from "@/types";
+import { Messages, Role } from "@/types";
 import { useAtomValue } from "jotai";
 import { toast } from "sonner";
 
 export const Lobby = () => {
   const ws = useAtomValue(wsAtom);
   const game = useAtomValue(gameAtom);
+  const currentPlayer = useCurrentPlayer();
 
   const handleStart = () => {
     ws?.send(
@@ -30,7 +32,11 @@ export const Lobby = () => {
         >
           Room code: {game.id}
         </Button>
-        <Button className="text-md w-full font-bold" onClick={handleStart}>
+        <Button
+          className="text-md w-full font-bold"
+          onClick={handleStart}
+          disabled={currentPlayer?.role === Role.ADMIN}
+        >
           Start
         </Button>
       </div>
