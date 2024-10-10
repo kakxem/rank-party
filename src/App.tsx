@@ -15,8 +15,8 @@ function App() {
   const game = useAtomValue(gameAtom);
 
   return (
-    <div className="flex h-screen flex-col justify-center pt-5 sm:gap-10 md:pt-0">
-      <header className="flex h-full max-h-[4rem] items-center justify-center">
+    <div className="flex h-screen flex-col justify-center pt-5 sm:gap-10 lg:pt-0">
+      <header className="flex h-full max-h-[6rem] items-center justify-center">
         <EditableRoomName />
       </header>
 
