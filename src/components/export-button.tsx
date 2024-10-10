@@ -22,8 +22,8 @@ export const ExportButton = () => {
   };
 
   return (
-    <Button variant="outline" onClick={handleExportList}>
-      <FileUp className="mr-1 h-4 w-4" /> Export List
+    <Button className="w-full" variant="outline" onClick={handleExportList}>
+      <FileUp className="mr-1 h-4 w-4" /> Export
     </Button>
   );
 };

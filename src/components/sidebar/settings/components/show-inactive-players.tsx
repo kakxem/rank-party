@@ -10,7 +10,7 @@ export const ShowInactivePlayers = () => {
 
   return (
     <div className="flex flex-col items-start">
-      <h3 className="mb-2 text-lg font-semibold">Player Visibility</h3>
+      <h3 className="mb-2 text-lg font-semibold">Visibility</h3>
       <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
         Toggle this switch to show or hide inactive players in the player list.
       </p>

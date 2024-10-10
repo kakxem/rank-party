@@ -54,7 +54,7 @@ export const ImportButton = () => {
   };
 
   return (
-    <Button variant="outline" onClick={handleImportList}>
+    <Button className="w-full" variant="outline" onClick={handleImportList}>
       <FileDown className="mr-1 h-4 w-4" /> Import
     </Button>
   );

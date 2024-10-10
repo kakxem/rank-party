@@ -1,5 +1,3 @@
-import { ExportButton } from "@/components/export-button";
-import { ImportButton } from "@/components/import-button";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Input } from "@/components/ui/input";
@@ -129,11 +127,6 @@ export const ItemsTable = () => {
   return (
     <section className="flex flex-1 flex-col overflow-y-hidden p-5">
       <header className="flex flex-col gap-3">
-        <div className="flex gap-1">
-          <ImportButton />
-          <ExportButton />
-        </div>
-
         <form className="flex gap-2" onSubmit={handleAddItem}>
           <Input
             type="url"
