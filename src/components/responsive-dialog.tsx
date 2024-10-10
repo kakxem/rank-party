@@ -21,7 +21,7 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { wsAtom } from "@/hooks/useGame";
 import { cn } from "@/lib/utils";
 import type { ConnectionData, Player } from "@/types";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -30,12 +30,17 @@ function FormComponent({
 }: {
   handleSubmit: (e: React.FormEvent) => void;
 }) {
-  const [formType] = useAtom(formTypeAtom);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  const formType = useAtomValue(formTypeAtom);
   const [dialogInfo, setDialogInfo] = useAtom(dialogInfoAtom);
 
   return (
-    <form className={cn("grid items-start gap-4")} onSubmit={handleSubmit}>
-      <div className="grid gap-2">
+    <form
+      className={cn("grid items-start gap-7 px-4", isDesktop && "gap-3 py-3")}
+      onSubmit={handleSubmit}
+    >
+      <div className="flex gap-2">
         <Input
           id="username"
           placeholder="Enter Username"
@@ -43,7 +48,7 @@ function FormComponent({
             setDialogInfo((prev) => ({ ...prev, playerName: e.target.value }))
           }
           value={dialogInfo.playerName}
-          className="w-80"
+          className="w-full"
           autoComplete="off"
         />
         {formType === "join" && (
@@ -54,7 +59,7 @@ function FormComponent({
               setDialogInfo((prev) => ({ ...prev, roomCode: e.target.value }))
             }
             value={dialogInfo.roomCode}
-            className="w-56"
+            className="w-full"
           />
         )}
       </div>
@@ -64,10 +69,11 @@ function FormComponent({
 }
 
 export function ResponsiveDialog() {
-  const [open, setOpen] = useAtom(openAtom);
-  const [formType] = useAtom(formTypeAtom);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  const [open, setOpen] = useAtom(openAtom);
   const [dialogInfo, setDialogInfo] = useAtom(dialogInfoAtom);
+  const formType = useAtomValue(formTypeAtom);
   const setWs = useSetAtom(wsAtom);
 
   const renderTitleAndDescription = () => ({
