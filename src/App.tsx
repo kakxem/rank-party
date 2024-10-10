@@ -18,15 +18,18 @@ function App() {
   return (
     <div className="flex h-screen flex-col justify-center pt-5 sm:gap-10 lg:pt-0">
       <header className="flex h-full max-h-[6rem] items-center justify-center">
-        <MobileSidebar />
         <EditableRoomName />
       </header>
 
       <main className="container flex max-h-[65rem] flex-grow gap-4 overflow-y-auto overflow-x-hidden px-3 pb-3 sm:px-10">
         {![Scene.MAIN, Scene.GAME].includes(game.scene) && (
-          <div className="hidden lg:block lg:max-w-xs lg:flex-1">
-            <Sidebar />
-          </div>
+          <>
+            <div className="hidden lg:block lg:max-w-xs lg:flex-1">
+              <Sidebar />
+            </div>
+
+            <MobileSidebar />
+          </>
         )}
 
         {game.scene === Scene.MAIN && <Main />}
