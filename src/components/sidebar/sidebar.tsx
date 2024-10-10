@@ -5,7 +5,7 @@ import { Settings as SettingsIcon, Users as UsersIcon } from "lucide-react";
 
 export const Sidebar = () => {
   return (
-    <aside className="hidden max-w-sm flex-1 flex-col gap-3 rounded-xl p-5 lg:flex">
+    <div className="flex h-full flex-1 flex-col gap-3 p-5">
       <Tabs defaultValue="players" className="flex h-full flex-col">
         <TabsList className="flex w-full">
           <TabsTrigger value="players" className="flex-1">
@@ -24,6 +24,6 @@ export const Sidebar = () => {
           <Settings />
         </TabsContent>
       </Tabs>
-    </aside>
+    </div>
   );
 };
