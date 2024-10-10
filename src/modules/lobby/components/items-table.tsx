@@ -7,7 +7,7 @@ import type { Item } from "@/types";
 import { Messages } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAtomValue } from "jotai";
-import { ArrowUpDown, Trash2 } from "lucide-react";
+import { ArrowUpDown, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 export const ItemsTable = () => {
@@ -150,7 +150,9 @@ export const ItemsTable = () => {
             onChange={(e) => setName(e.target.value)}
             value={name}
           />
-          <Button type="submit">Add</Button>
+          <Button type="submit" className="p-3">
+            <Plus className="h-5 w-5" />
+          </Button>
         </form>
       </header>
 
