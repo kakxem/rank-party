@@ -4,6 +4,7 @@ import { gameAtom, wsAtom } from "@/hooks/useGame";
 import { ItemsTable } from "@/modules/lobby/components/items-table";
 import { Messages, Role } from "@/types";
 import { useAtomValue } from "jotai";
+import { Copy } from "lucide-react";
 import { toast } from "sonner";
 
 export const Lobby = () => {
@@ -24,21 +25,20 @@ export const Lobby = () => {
       <ItemsTable />
       <div className="flex justify-center gap-3">
         <Button
-          className="text-md w-fit px-10 font-bold"
+          variant="secondary"
+          className="text-md w-fit gap-2 px-10 font-bold"
           onClick={() => {
             navigator.clipboard.writeText(game.id ?? "???");
             toast.success("Room code copied to clipboard");
           }}
         >
-          Room code: {game.id}
+          <Copy className="h-4 w-4" /> <span>Copy room code</span>
         </Button>
-        <Button
-          className="text-md w-full font-bold"
-          onClick={handleStart}
-          disabled={currentPlayer?.role === Role.ADMIN}
-        >
-          Start
-        </Button>
+        {currentPlayer?.role === Role.ADMIN && (
+          <Button className="text-md w-52 font-extrabold" onClick={handleStart}>
+            START
+          </Button>
+        )}
       </div>
     </section>
   );
