@@ -15,7 +15,7 @@ export const Game = () => {
   const [lastItem, setLastItem] = useState<string | null>(null);
   const [activePlayers, setActivePlayers] = useState(0);
   const [selectedScore, setSelectedScore] = useState<number | null>(null);
-  const [remainingTime, setRemainingTime] = useState(10);
+  const [remainingTime, setRemainingTime] = useState(5);
 
   const alreadyVoted = game?.list[game?.state?.actualItem]?.score?.length;
   const actualItem = game?.list[game?.state?.actualItem];
@@ -34,7 +34,7 @@ export const Game = () => {
       // Restart the game
       const activePlayers = game.players.filter((player) => player.active);
       setActivePlayers(activePlayers.length);
-      setRemainingTime(10);
+      setRemainingTime(5);
       setSelectedScore(null);
       setLastItem(actualItem.id);
     }

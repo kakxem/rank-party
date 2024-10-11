@@ -215,7 +215,7 @@ router.get("/", async (ctx) => {
             roomCode,
             updatedGame: game,
           });
-        }, 10000);
+        }, 5000);
       }
 
       updateAndPublishGame({
