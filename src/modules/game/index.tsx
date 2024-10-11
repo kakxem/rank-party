@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Messages } from "@/types";
 import "@justinribeiro/lite-youtube";
 import { useAtomValue } from "jotai";
+import { Clock, Users } from "lucide-react"; // Add Clock import
 import { useEffect, useState } from "react";
 
 export const Game = () => {
@@ -18,6 +19,8 @@ export const Game = () => {
 
   const alreadyVoted = game?.list[game?.state?.actualItem]?.score?.length;
   const actualItem = game?.list[game?.state?.actualItem];
+  const totalItems = game?.list?.length || 0;
+  const currentItemNumber = (game?.state?.actualItem || 0) + 1;
 
   useEffect(() => {
     // Reset if the actual item changes
@@ -62,7 +65,26 @@ export const Game = () => {
   return (
     <section className="flex flex-1 flex-col rounded-xl">
       <section className="flex grow flex-col items-center justify-center gap-5">
-        <h2 className="text-5xl font-bold">{actualItem.name}</h2>
+        <div className="text-center">
+          <h2 className="text-5xl font-bold">{actualItem.name}</h2>
+          <div className="mt-2 flex items-center justify-center gap-2 text-xl text-gray-500">
+            <span>
+              {currentItemNumber} of {totalItems}
+            </span>
+            <span className="mx-2">•</span>
+            <Users className="h-5 w-5" />
+            <span>
+              {alreadyVoted}/{activePlayers}
+            </span>
+            {alreadyVoted === activePlayers && (
+              <>
+                <span className="mx-2">•</span>
+                <Clock className="h-5 w-5" />
+                <span>{remainingTime}s</span>
+              </>
+            )}
+          </div>
+        </div>
         <div className="flex aspect-video w-full max-w-5xl shadow-2xl transition-transform">
           <lite-youtube
             videoid={videoId}
@@ -88,14 +110,6 @@ export const Game = () => {
             </Button>
           ))}
         </div>
-
-        <p className="text-3xl">
-          {alreadyVoted}/{activePlayers}
-        </p>
-
-        {alreadyVoted === activePlayers && (
-          <p className="text-3xl">Time left: {remainingTime}</p>
-        )}
       </div>
     </section>
   );
