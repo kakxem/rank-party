@@ -17,7 +17,7 @@ function App() {
 
   return (
     <>
-      <div className="flex h-screen flex-col justify-center pt-5 lg:gap-10 lg:pt-0">
+      <div className="flex h-screen flex-col justify-center pt-5 lg:gap-10 lg:pt-10">
         <header className="flex h-full max-h-[6rem] items-center justify-center">
           <EditableRoomName />
         </header>
