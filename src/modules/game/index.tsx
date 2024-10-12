@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { gameAtom, wsAtom } from "@/hooks/useGame";
+import { getProxyImageUrl } from "@/lib/image-proxy";
 import { YOUTUBE_REGEX } from "@/lib/regex";
 import { cn } from "@/lib/utils";
 import { Messages } from "@/types";
 import "@justinribeiro/lite-youtube";
 import { useAtomValue } from "jotai";
-import { Clock, Users } from "lucide-react"; // Add Clock import
+import { Clock, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export const Game = () => {
@@ -86,11 +87,19 @@ export const Game = () => {
           </div>
         </div>
         <div className="flex aspect-video w-full max-w-5xl shadow-2xl transition-transform">
-          <lite-youtube
-            videoid={videoId}
-            videotitle={actualItem.name}
-            style={{ borderRadius: "0.25rem" }}
-          />
+          {videoId ? (
+            <lite-youtube
+              videoid={videoId}
+              videotitle={actualItem.name}
+              style={{ borderRadius: "0.25rem" }}
+            />
+          ) : (
+            <img
+              src={getProxyImageUrl(actualItem.link)}
+              alt={actualItem.name}
+              className="h-full w-full rounded object-contain"
+            />
+          )}
         </div>
       </section>
 
