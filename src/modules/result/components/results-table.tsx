@@ -1,3 +1,4 @@
+import { BackToLobbyButton } from "@/components/back-to-lobby-button";
 import { DownloadButton } from "@/components/download-button";
 import { DataTable } from "@/components/ui/data-table";
 import {
@@ -6,14 +7,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useCurrentPlayer } from "@/hooks/useCurrentPlayer";
 import { gameAtom } from "@/hooks/useGame";
 import { processedData } from "@/lib/game";
-import type { Item } from "@/types";
+import { Role, type Item } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAtomValue } from "jotai";
 
 export const ResultsTable = () => {
   const game = useAtomValue(gameAtom);
+  const currentPlayer = useCurrentPlayer();
 
   const columns: ColumnDef<Item>[] = [
     {
@@ -106,6 +109,7 @@ export const ResultsTable = () => {
   return (
     <section className="flex flex-1 flex-col overflow-y-hidden p-5">
       <header className="flex justify-between">
+        {currentPlayer?.role === Role.ADMIN && <BackToLobbyButton />}
         <DownloadButton />
       </header>
       <div className="mt-5 h-full overflow-x-auto rounded-lg border">

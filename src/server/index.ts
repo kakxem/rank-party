@@ -178,6 +178,20 @@ router.get("/", async (ctx) => {
       });
     }
 
+    if (type === Messages.BACK_TO_LOBBY) {
+      game.scene = Scene.LOBBY;
+      game.state = { actualItem: 0, executingTimeout: false };
+      game.list = game.list.map((item) => ({
+        ...item,
+        score: [],
+      }));
+
+      updateAndPublishGame({
+        roomCode,
+        updatedGame: game,
+      });
+    }
+
     if (type === Messages.ADD_SCORE) {
       const { score } = data;
       const actualItem = game.list[game.state.actualItem];
