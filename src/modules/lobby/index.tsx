@@ -35,7 +35,10 @@ export const Lobby = () => {
           <Copy className="h-4 w-4" /> <span>Copy room code</span>
         </Button>
         {currentPlayer?.role === Role.ADMIN && (
-          <Button className="text-md w-52 font-extrabold" onClick={handleStart}>
+          <Button
+            className="text-md w-fit font-extrabold sm:w-52"
+            onClick={handleStart}
+          >
             START
           </Button>
         )}
