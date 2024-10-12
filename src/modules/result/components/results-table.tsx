@@ -104,11 +104,11 @@ export const ResultsTable = () => {
   ];
 
   return (
-    <section className="h-full w-full p-5">
+    <section className="flex flex-1 flex-col overflow-y-hidden p-5">
       <header className="flex justify-between">
         <DownloadButton />
       </header>
-      <div className="py-5">
+      <div className="mt-5 h-full overflow-x-auto rounded-lg border">
         <DataTable columns={columns} data={processedData(game)} />
       </div>
     </section>
