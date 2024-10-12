@@ -7,10 +7,11 @@ export const EditableRoomName = () => {
   const game = useAtomValue(gameAtom);
   const ws = useAtomValue(wsAtom);
   const roomNameRef = useRef<HTMLHeadingElement>(null);
+  const MAX_LENGTH = 30;
 
   const cleanText = (text: string) => {
     // Reemplaza múltiples espacios con uno solo y elimina espacios al inicio y al final
-    return text.replace(/\s+/g, " ").trim();
+    return text.replace(/\s+/g, " ").trim().slice(0, MAX_LENGTH);
   };
 
   const handleInputChange = () => {
@@ -31,7 +32,9 @@ export const EditableRoomName = () => {
 
   useEffect(() => {
     if (roomNameRef.current && roomNameRef.current.innerText !== game.name) {
-      roomNameRef.current.innerText = game.name || "Party Rank Group";
+      roomNameRef.current.innerText = cleanText(
+        game.name || "Party Rank Group",
+      );
     }
   }, [game.name]);
 
@@ -40,12 +43,24 @@ export const EditableRoomName = () => {
       event.preventDefault();
       roomNameRef.current?.blur(); // Quita el foco del elemento
     }
-  };
 
-  const selectAllText = () => {
-    if (roomNameRef.current && game.scene === Scene.LOBBY) {
-      roomNameRef.current.focus();
-      window.getSelection()?.selectAllChildren(roomNameRef.current);
+    if (roomNameRef.current) {
+      const selection = window.getSelection();
+      const isTextSelected = selection && selection.toString().length > 0;
+
+      // Allow input if text is selected or if the length is less than MAX_LENGTH
+      if (
+        roomNameRef.current.innerText.length < MAX_LENGTH ||
+        isTextSelected ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.key.length !== 1
+      ) {
+        return; // Allow the input
+      }
+
+      // Prevent input only if no text is selected and max length is reached
+      event.preventDefault();
     }
   };
 
@@ -56,8 +71,7 @@ export const EditableRoomName = () => {
       suppressContentEditableWarning
       onBlur={handleInputChange}
       onKeyDown={handleKeyDown}
-      onClick={selectAllText}
-      className="overflow-hidden py-2 text-center text-5xl font-semibold focus:outline-none md:text-6xl lg:text-7xl"
+      className="font-baloo2 overflow-hidden px-10 py-2 text-center text-5xl font-semibold focus:outline-none md:text-6xl lg:text-7xl"
     >
       {game.name || "Party Rank Group"}
     </h1>

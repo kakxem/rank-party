@@ -99,3 +99,16 @@
     background-color: hsl(var(--scrollbar-thumb-hover));
   }
 }
+@font-face {
+  font-family: "Baloo 2";
+  src: url("/fonts/Baloo2-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer components {
+  .font-baloo2 {
+    font-family: "Baloo 2", sans-serif;
+  }
+}
