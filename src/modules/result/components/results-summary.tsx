@@ -23,35 +23,39 @@ const SummaryCard = ({
   score: string;
   thumbnailUrl: string;
 }) => (
-  <div className="flex flex-col overflow-hidden rounded-2xl bg-white shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-    <div className="relative flex-shrink-0">
-      <img
-        src={getProxyImageUrl(thumbnailUrl)}
-        alt={name}
-        className="h-32 w-full object-cover sm:h-48"
-      />
-      <div className="absolute left-0 top-0 h-full w-full bg-gradient-to-b from-transparent to-black/50" />
-      <div className="absolute left-2 top-2 rounded-full bg-white p-2 shadow-md">
-        <span
-          className={cn("text-xl font-bold sm:text-2xl", getRankColor(rank))}
-        >
-          #{rank}
-        </span>
-      </div>
-    </div>
-    <div className="flex flex-grow flex-col justify-between p-2 sm:p-4">
+  <article className="flex flex-col overflow-hidden rounded-2xl bg-white shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+    <header className="relative flex-shrink-0">
+      <figure>
+        <img
+          src={getProxyImageUrl(thumbnailUrl)}
+          alt={name}
+          className="h-32 w-full object-cover sm:h-48"
+        />
+        <div className="absolute left-0 top-0 h-full w-full bg-gradient-to-b from-transparent to-black/50" />
+        <figcaption className="absolute left-2 top-2 rounded-full bg-white p-2 shadow-md">
+          <span
+            className={cn("text-xl font-bold sm:text-2xl", getRankColor(rank))}
+          >
+            #{rank}
+          </span>
+        </figcaption>
+      </figure>
+    </header>
+
+    <section className="flex flex-grow flex-col justify-between p-2 sm:p-4">
       <h3 className="line-clamp-2 text-center text-sm font-semibold text-gray-800 sm:text-xl">
         {name}
       </h3>
       <div className="mt-1 text-center sm:mt-2">
-        <span
+        <data
+          value={score}
           className={cn("text-xl font-bold sm:text-2xl", getRankColor(rank))}
         >
           {score}
-        </span>
+        </data>
       </div>
-    </div>
-  </div>
+    </section>
+  </article>
 );
 
 export const ResultsSummary = () => {
