@@ -1,9 +1,10 @@
+import { MobileSidebar } from "@/components/sidebar/mobile-sidebar";
 import { Players } from "@/components/sidebar/players";
 import { Settings } from "@/components/sidebar/settings/settings";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Settings as SettingsIcon, Users as UsersIcon } from "lucide-react";
 
-export const Sidebar = () => {
+export const SidebarContent = () => {
   return (
     <div className="flex h-full flex-1 flex-col gap-3 p-5">
       <Tabs defaultValue="players" className="flex h-full flex-col">
@@ -25,5 +26,17 @@ export const Sidebar = () => {
         </TabsContent>
       </Tabs>
     </div>
+  );
+};
+
+export const Sidebar = () => {
+  return (
+    <>
+      <aside className="hidden lg:block lg:max-w-xs lg:flex-1">
+        <SidebarContent />
+      </aside>
+
+      <MobileSidebar />
+    </>
   );
 };

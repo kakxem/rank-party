@@ -1,7 +1,5 @@
 import { Debug } from "@/components/debug";
 import { EditableRoomName } from "@/components/editable-room-name";
-import { MobileSidebar } from "@/components/sidebar/mobile-sidebar";
-import { Sidebar } from "@/components/sidebar/sidebar";
 import { gameAtom, useGame } from "@/hooks/useGame";
 import { Game } from "@/modules/game";
 import { Lobby } from "@/modules/lobby";
@@ -23,16 +21,6 @@ function App() {
         </header>
 
         <main className="container flex max-h-[65rem] flex-grow gap-4 overflow-y-auto overflow-x-hidden px-3 pb-3 sm:px-10">
-          {![Scene.MAIN, Scene.GAME].includes(game.scene) && (
-            <>
-              <div className="hidden lg:block lg:max-w-xs lg:flex-1">
-                <Sidebar />
-              </div>
-
-              <MobileSidebar />
-            </>
-          )}
-
           {game.scene === Scene.MAIN && <Main />}
           {game.scene === Scene.LOBBY && <Lobby />}
           {game.scene === Scene.GAME && <Game />}

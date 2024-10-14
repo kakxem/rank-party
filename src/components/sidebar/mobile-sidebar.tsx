@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ChevronRight } from "lucide-react";
-import { Sidebar } from "./sidebar";
+import { SidebarContent } from "./sidebar";
 
 export const MobileSidebar = () => {
   return (
@@ -16,7 +16,7 @@ export const MobileSidebar = () => {
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="w-[70%] p-0 pt-5 sm:w-[385px]">
-        <Sidebar />
+        <SidebarContent />
       </SheetContent>
     </Sheet>
   );
