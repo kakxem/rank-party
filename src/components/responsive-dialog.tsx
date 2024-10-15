@@ -103,15 +103,16 @@ export function ResponsiveDialog() {
 
     const data: ConnectionData = {
       player: createPlayer(),
-      roomCode:
-        formType === "create"
-          ? Math.random().toString(36).slice(2, 8)
-          : roomCode,
       join: formType === "join",
     };
+    const roomId =
+      formType === "create" ? Math.random().toString(36).slice(2, 8) : roomCode;
 
+    const host = "127.0.0.1:1999";
     const ws = new WebSocket(
-      `ws://localhost:5000?data=${JSON.stringify(data)}`,
+      `ws://${host}/party/${roomId}?data=${encodeURIComponent(
+        JSON.stringify(data),
+      )}`,
     );
     setWs(ws);
   };

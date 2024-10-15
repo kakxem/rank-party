@@ -1,3 +1,5 @@
+import type * as Party from "partykit/server";
+
 export enum Role {
   ADMIN = "ADMIN",
   USER = "PLAYER",
@@ -48,7 +50,6 @@ export type ConnectionData = {
     id: string;
     name: string;
   };
-  roomCode: string;
   join?: boolean;
 };
 
@@ -65,3 +66,5 @@ export interface Game {
   list: Item[];
   state: State;
 }
+
+export type PlayerConnection = Party.Connection<{ id: string }>;

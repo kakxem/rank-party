@@ -8,7 +8,8 @@
     "server": "bun run --watch server/index.ts",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev:party": "partykit dev"
   },
   "dependencies": {
     "@justinribeiro/lite-youtube": "^1.5.0",
@@ -29,7 +30,8 @@
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^10.0.0",
-    "vaul": "^1.0.0"
+    "vaul": "^1.0.0",
+    "partysocket": "1.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
@@ -48,6 +50,7 @@
     "tailwindcss": "^3.4.9",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.0",
-    "vite": "^5.4.0"
+    "vite": "^5.4.0",
+    "partykit": "0.0.111"
   }
 }

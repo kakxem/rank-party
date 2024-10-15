@@ -1,3 +1,4 @@
+import type * as Party from "partykit/server";
 import {
   Messages,
   Role,
@@ -5,9 +6,9 @@ import {
   type ConnectionData,
   type Game,
   type Player,
-} from "../types.ts";
+} from "../src/types.ts";
 
-export const createNewGame = ({ player, roomCode }: ConnectionData): Game => {
+export const createNewGame = ({ player }: ConnectionData): Game => {
   const newPlayer: Player = {
     id: player.id.toString(),
     name: player.name,
@@ -16,8 +17,7 @@ export const createNewGame = ({ player, roomCode }: ConnectionData): Game => {
   };
 
   return {
-    id: roomCode,
-    name: "Change the room name",
+    name: `${player.name}'s game`,
     scene: Scene.LOBBY,
     players: [newPlayer],
     list: [],
@@ -59,11 +59,11 @@ export const joinGame = ({
 };
 
 export const sendError = ({
-  ws,
+  conn,
   message,
 }: {
-  ws: WebSocket;
+  conn: Party.Connection;
   message: string;
 }) => {
-  ws.send(JSON.stringify({ type: Messages.ERROR, data: { message } }));
+  conn.send(JSON.stringify({ type: Messages.ERROR, data: { message } }));
 };

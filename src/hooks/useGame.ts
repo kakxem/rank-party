@@ -24,7 +24,9 @@ export const useGame = () => {
     if (!ws) return;
 
     ws.onopen = () => {
-      console.log("open");
+      const url = new URL(ws.url);
+      const id = url.pathname.split("/").pop();
+      setGame((prev) => ({ ...prev, id }));
     };
 
     ws.onmessage = (event) => {
