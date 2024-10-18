@@ -60,6 +60,7 @@ function FormComponent({
             }
             value={dialogInfo.roomCode}
             className="w-full"
+            autoComplete="off"
           />
         )}
       </div>
