@@ -5,6 +5,7 @@ import {
   type ConnectionData,
   type Game,
   type PlayerConnection,
+  type Settings,
 } from "../src/types.ts";
 import { createNewGame, joinGame, sendError } from "./actions.ts";
 
@@ -64,6 +65,7 @@ export default class Server implements Party.Server {
       [Messages.START_GAME]: () => this.handleStartGame(game, sender),
       [Messages.BACK_TO_LOBBY]: () => this.handleBackToLobby(game),
       [Messages.ADD_SCORE]: () => this.handleAddScore(game, data, playerId),
+      [Messages.UPDATE_SETTINGS]: () => this.handleUpdateSettings(game, data),
     };
 
     if (messageHandlers[type]) {
@@ -249,8 +251,23 @@ export default class Server implements Party.Server {
         this.updateAndPublishGame({
           updatedGame: game,
         });
-      }, 5000);
+      }, game.settings.timeout * 1000);
     }
+
+    this.updateAndPublishGame({
+      updatedGame: game,
+    });
+  }
+
+  private handleUpdateSettings(game: Game, data: Partial<Settings>) {
+    const timeoutValues = [1, 3, 5, 7, 10];
+
+    data.timeout = timeoutValues[data.timeout!];
+
+    game.settings = {
+      ...game.settings,
+      ...data,
+    };
 
     this.updateAndPublishGame({
       updatedGame: game,

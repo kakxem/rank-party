@@ -35,11 +35,11 @@ export const Game = () => {
       // Restart the game
       const activePlayers = game.players.filter((player) => player.active);
       setActivePlayers(activePlayers.length);
-      setRemainingTime(5);
+      setRemainingTime(game.settings.timeout);
       setSelectedScore(null);
       setLastItem(actualItem.id);
     }
-  }, [actualItem, game.players, lastItem]);
+  }, [actualItem, game.players, game.settings, lastItem]);
 
   useEffect(() => {
     // Set the remaining time

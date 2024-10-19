@@ -42,6 +42,7 @@ export enum Messages {
   ADD_ITEM = "addItem",
   IMPORT_LIST = "importList",
   DELETE_ITEM = "deleteItem",
+  UPDATE_SETTINGS = "updateSettings",
   ERROR = "error",
 }
 
@@ -58,6 +59,10 @@ export type State = {
   executingTimeout: boolean;
 };
 
+export interface Settings {
+  timeout: number;
+}
+
 export interface Game {
   id?: string;
   name?: string;
@@ -65,6 +70,7 @@ export interface Game {
   players: Player[];
   list: Item[];
   state: State;
+  settings: Settings;
 }
 
 export type PlayerConnection = Party.Connection<{ id: string }>;

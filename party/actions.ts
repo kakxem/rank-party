@@ -25,6 +25,9 @@ export const createNewGame = ({ player }: ConnectionData): Game => {
       actualItem: 0,
       executingTimeout: false,
     },
+    settings: {
+      timeout: 3,
+    },
   };
 };
 

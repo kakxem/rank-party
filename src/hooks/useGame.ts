@@ -14,6 +14,9 @@ export const gameAtom = atom<Game>({
     actualItem: 0,
     executingTimeout: false,
   },
+  settings: {
+    timeout: 3,
+  },
 });
 
 export const useGame = () => {
