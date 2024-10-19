@@ -3,12 +3,14 @@ import { wsAtom } from "@/hooks/useGame";
 import { Messages, type Settings } from "@/types";
 import { useAtomValue } from "jotai";
 
+const TIMEOUT_VALUES = [1, 3, 5, 7, 10];
+
 export const ChangeWaitingTime = () => {
   const ws = useAtomValue(wsAtom);
-  const secondsValues = ["1s", "3s", "5s", "7s", "10s"];
 
   const handleTimeoutChange = (value: number) => {
-    const settings: Partial<Settings> = { timeout: value };
+    const settings: Partial<Settings> = { timeout: TIMEOUT_VALUES[value] };
+
     ws?.send(
       JSON.stringify({
         type: Messages.UPDATE_SETTINGS,
@@ -26,17 +28,17 @@ export const ChangeWaitingTime = () => {
       <div className="flex h-full w-full items-center space-x-2">
         <Slider
           defaultValue={[1]}
-          max={4}
+          max={TIMEOUT_VALUES.length - 1}
           step={1}
-          onValueChange={(value) => {
+          onValueCommit={(value) => {
             handleTimeoutChange(value[0]);
           }}
         />
       </div>
       <div className="mt-1 flex h-full w-full justify-between px-1">
-        {secondsValues.map((value) => (
+        {TIMEOUT_VALUES.map((value) => (
           <div key={value} className="flex w-3 flex-col items-center">
-            <span className="mt-1 text-sm text-muted-foreground">{value}</span>
+            <span className="mt-1 text-sm text-muted-foreground">{value}s</span>
           </div>
         ))}
       </div>

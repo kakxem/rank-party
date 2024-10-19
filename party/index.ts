@@ -260,10 +260,6 @@ export default class Server implements Party.Server {
   }
 
   private handleUpdateSettings(game: Game, data: Partial<Settings>) {
-    const timeoutValues = [1, 3, 5, 7, 10];
-
-    data.timeout = timeoutValues[data.timeout!];
-
     game.settings = {
       ...game.settings,
       ...data,
