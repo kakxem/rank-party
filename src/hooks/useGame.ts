@@ -23,6 +23,12 @@ export const useGame = () => {
   const ws = useAtomValue(wsAtom);
   const setGame = useSetAtom(gameAtom);
 
+  // Add beforeunload event listener
+  const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+    e.preventDefault();
+    e.returnValue = true;
+  };
+
   useEffect(() => {
     if (!ws) return;
 
@@ -48,8 +54,11 @@ export const useGame = () => {
       console.log("close");
     };
 
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
     return () => {
       ws.close();
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [setGame, ws]);
 };
