@@ -56,16 +56,19 @@ export default class Server implements Party.Server {
     if (!game) return;
 
     const messageHandlers = {
-      [Messages.UPDATE_ROOM_NAME]: this.handleUpdateRoomName(data),
-      [Messages.ADD_ITEM]: this.handleAddItem(game, data, playerId, sender),
-      [Messages.IMPORT_LIST]: this.handleImportList(game, data),
-      [Messages.DELETE_ITEM]: this.handleDeleteItem(game, data),
-      [Messages.START_GAME]: this.handleStartGame(game, sender),
-      [Messages.BACK_TO_LOBBY]: this.handleBackToLobby(game),
-      [Messages.ADD_SCORE]: this.handleAddScore(game, data, playerId),
+      [Messages.UPDATE_ROOM_NAME]: () => this.handleUpdateRoomName(data),
+      [Messages.ADD_ITEM]: () =>
+        this.handleAddItem(game, data, playerId, sender),
+      [Messages.IMPORT_LIST]: () => this.handleImportList(game, data),
+      [Messages.DELETE_ITEM]: () => this.handleDeleteItem(game, data),
+      [Messages.START_GAME]: () => this.handleStartGame(game, sender),
+      [Messages.BACK_TO_LOBBY]: () => this.handleBackToLobby(game),
+      [Messages.ADD_SCORE]: () => this.handleAddScore(game, data, playerId),
     };
 
-    messageHandlers[type]();
+    if (messageHandlers[type]) {
+      messageHandlers[type](); // Call the handler if it exists
+    }
   }
 
   async onClose(conn: PlayerConnection) {
