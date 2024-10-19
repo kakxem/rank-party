@@ -16,6 +16,7 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { dialogInfoAtom, formTypeAtom, openAtom } from "@/hooks/use-dialog";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { wsAtom } from "@/hooks/useGame";
@@ -37,31 +38,38 @@ function FormComponent({
 
   return (
     <form
-      className={cn("grid items-start gap-7 px-4", isDesktop && "gap-3 py-3")}
+      className={cn("grid items-start gap-7 px-4", isDesktop && "gap-3")}
       onSubmit={handleSubmit}
     >
-      <div className="flex gap-2">
-        <Input
-          id="username"
-          placeholder="Enter Username"
-          onChange={(e) =>
-            setDialogInfo((prev) => ({ ...prev, playerName: e.target.value }))
-          }
-          value={dialogInfo.playerName}
-          className="w-full"
-          autoComplete="off"
-        />
-        {formType === "join" && (
+      <div className="flex w-full gap-2">
+        <div className="flex w-full flex-col gap-1">
+          <Label>Username</Label>
           <Input
-            id="id"
-            placeholder="Enter Room ID"
+            id="username"
+            placeholder="Enter Username"
             onChange={(e) =>
-              setDialogInfo((prev) => ({ ...prev, roomCode: e.target.value }))
+              setDialogInfo((prev) => ({ ...prev, playerName: e.target.value }))
             }
-            value={dialogInfo.roomCode}
+            value={dialogInfo.playerName}
             className="w-full"
             autoComplete="off"
           />
+        </div>
+
+        {formType === "join" && (
+          <div className="flex w-full flex-col gap-1">
+            <Label>Room ID</Label>
+            <Input
+              id="id"
+              placeholder="Enter Room ID"
+              onChange={(e) =>
+                setDialogInfo((prev) => ({ ...prev, roomCode: e.target.value }))
+              }
+              value={dialogInfo.roomCode}
+              className="w-full"
+              autoComplete="off"
+            />
+          </div>
         )}
       </div>
       <Button type="submit">{formType === "create" ? "Create" : "Join"}</Button>
@@ -77,13 +85,13 @@ export function ResponsiveDialog() {
   const formType = useAtomValue(formTypeAtom);
   const setWs = useSetAtom(wsAtom);
 
-  const renderTitleAndDescription = () => ({
+  const renderTitleAndDescription = {
     title: formType === "create" ? "Create Room" : "Join Room",
     description:
       formType === "create"
         ? "Enter your username and create a new room."
         : "Enter your username and the room ID to join an existing room.",
-  });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -140,9 +148,9 @@ export function ResponsiveDialog() {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{renderTitleAndDescription().title}</DialogTitle>
+            <DialogTitle>{renderTitleAndDescription.title}</DialogTitle>
             <DialogDescription>
-              {renderTitleAndDescription().description}
+              {renderTitleAndDescription.description}
             </DialogDescription>
           </DialogHeader>
           <FormComponent handleSubmit={handleSubmit} />
@@ -155,9 +163,9 @@ export function ResponsiveDialog() {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerContent>
         <DrawerHeader className="text-left">
-          <DrawerTitle>{renderTitleAndDescription().title}</DrawerTitle>
+          <DrawerTitle>{renderTitleAndDescription.title}</DrawerTitle>
           <DrawerDescription>
-            {renderTitleAndDescription().description}
+            {renderTitleAndDescription.description}
           </DrawerDescription>
         </DrawerHeader>
         <FormComponent handleSubmit={handleSubmit} />
