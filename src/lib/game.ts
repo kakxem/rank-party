@@ -1,4 +1,4 @@
-import type { Game, ResultItem } from "@/types";
+import type { Game, Player, ResultItem } from "@/types";
 
 // Function to calculate average score for a given item
 export const calculateAverageScore = (
@@ -16,3 +16,14 @@ export const processedData = (game: Game): ResultItem[] =>
       averageScore: calculateAverageScore(item.score),
     }))
     .sort((a, b) => b.averageScore - a.averageScore); // Sort by averageScore in descending order
+
+export const getSavedPlayer = () => {
+  return JSON.parse(localStorage.getItem("player") ?? "{}") as Pick<
+    Player,
+    "id" | "name"
+  >;
+};
+
+export const setSavedPlayer = (player: Pick<Player, "id" | "name">) => {
+  localStorage.setItem("player", JSON.stringify(player));
+};
