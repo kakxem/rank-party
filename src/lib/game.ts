@@ -19,7 +19,7 @@ export const processedData = (game: Game): ResultItem[] =>
 
 export const getSavedPlayer = () => {
   return JSON.parse(
-    localStorage.getItem("player") ?? "{id: null, name: null}",
+    localStorage.getItem("player") ?? '{"id": null, "name": null}',
   ) as Pick<Player, "id" | "name">;
 };
 
