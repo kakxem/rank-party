@@ -27,10 +27,12 @@ function App() {
           {game.scene === Scene.RESULT && <Result />}
         </main>
 
-        <footer className="flex flex-shrink-0">footer</footer>
+        <footer className="absolute bottom-0 left-0 text-background">
+          footer
+        </footer>
       </div>
       <Toaster richColors />
-      <Debug game={game} />
+      {import.meta.env.DEV && <Debug game={game} />}
     </>
   );
 }
