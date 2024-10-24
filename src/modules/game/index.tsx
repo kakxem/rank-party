@@ -27,10 +27,10 @@ export const Game = () => {
     // Reset if the actual item changes
     if (actualItem && actualItem.id !== lastItem) {
       // Set the video id
-      if (YOUTUBE_REGEX.test(actualItem.link)) {
-        const id = actualItem.link.match(YOUTUBE_REGEX)?.[1];
-        setVideoId(id ?? "");
-      }
+      const id = YOUTUBE_REGEX.test(actualItem.link)
+        ? actualItem.link.match(YOUTUBE_REGEX)?.[1]
+        : "";
+      setVideoId(id ?? "");
 
       // Restart the game
       const activePlayers = game.players.filter((player) => player.active);
