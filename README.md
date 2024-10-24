@@ -1,50 +1,107 @@
-# React + TypeScript + Vite
+# Rank Party
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Rank Party is a collaborative game where players rank items in a list with their friends. Each player votes on each item, scoring them from 0 to 10. At the end of the game, a table displays each item's score and its position in the list.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Real-time Collaboration**: Play with friends and rank items together.
+- **Flexible Scoring**: Score each item from 0 to 10.
+- **Dynamic Results**: View a table of results showing each item's score and rank.
+- **Responsive Design**: Enjoy a seamless experience on both desktop and mobile devices.
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Prerequisites
 
-- Configure the top-level `parserOptions` property like this:
+- [Bun](https://bun.sh/) as the package manager.
+- [npm](https://www.npmjs.com/) for running specific scripts (only for the PartyKit development server).
+- [Vite](https://vitejs.dev/) for development and build processes.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/kakxem/rank-party.git
+   cd rank-party
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   bun install
+   ```
+
+### Running the App
+
+To start the development server, run:
+
+```bash
+bun run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Running PartyKit Development Server
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+To start the PartyKit development server, which requires npm (not Bun), run:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm run dev:party
 ```
+
+### Building the App
+
+To build the app for production, run:
+
+```bash
+bun run build
+```
+
+### Linting
+
+To lint the codebase, run:
+
+```bash
+bun run lint
+```
+
+## Project Structure
+
+- **src/**: Contains the main source code for the application.
+  - **components/**: Reusable UI components.
+  - **hooks/**: Custom React hooks.
+  - **lib/**: Utility functions and libraries.
+  - **modules/**: Feature-specific modules, such as game, lobby, and result.
+  - **types.ts**: TypeScript type definitions.
+  - **App.tsx**: The main application component.
+  - **main.tsx**: Entry point for the React application.
+
+- **party/**: Contains server-side logic for PartyKit.
+  - **index.ts**: Main server implementation.
+  - **actions.ts**: Helper functions for server actions.
+
+- **public/**: Static assets like images and icons.
+
+- **package.json**: Project metadata and dependencies.
+
+- **tsconfig.app.json** and **tsconfig.node.json**: TypeScript configuration files for the app and node environments.
+
+- **README.md**: Project documentation.
+
+## Usage
+
+1. **Create or Join a Room**: Start by creating a new room or joining an existing one with a room code.
+2. **Vote on Items**: Each player scores items from 0 to 10.
+3. **View Results**: Once all items are scored, view the results table showing scores and rankings.
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Acknowledgments
+
+- Built with React, TypeScript, and Vite.
+- Special thanks to [oyoke23](https://github.com/oyoke23) for helping me with the project.
