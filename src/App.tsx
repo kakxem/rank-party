@@ -1,5 +1,6 @@
 import { Debug } from "@/components/debug";
 import { EditableRoomName } from "@/components/editable-room-name";
+import { SharedHelmet } from "@/components/shared-helmet";
 import { gameAtom, useGame } from "@/hooks/use-game";
 import { Game } from "@/modules/game";
 import { Lobby } from "@/modules/lobby";
@@ -15,6 +16,8 @@ function App() {
 
   return (
     <>
+      <SharedHelmet />
+
       <div className="flex h-screen flex-col justify-center pt-5 lg:gap-10 lg:pt-10">
         <header className="flex h-full max-h-[6rem] items-center justify-center">
           <EditableRoomName />
