@@ -32,9 +32,7 @@ export const EditableRoomName = () => {
 
   useEffect(() => {
     if (roomNameRef.current && roomNameRef.current.innerText !== game.name) {
-      roomNameRef.current.innerText = cleanText(
-        game.name || "Party Rank Group",
-      );
+      roomNameRef.current.innerText = cleanText(game.name || "Rank Party");
     }
   }, [game.name]);
 
@@ -73,7 +71,7 @@ export const EditableRoomName = () => {
       onKeyDown={handleKeyDown}
       className="overflow-hidden px-10 py-2 text-center font-baloo2 text-5xl font-semibold focus:outline-none md:text-6xl lg:text-7xl"
     >
-      {game.name || "Party Rank Group"}
+      {game.name || "Rank Party"}
     </h1>
   );
 };
