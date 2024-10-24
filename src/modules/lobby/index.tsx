@@ -1,6 +1,6 @@
 import { Sidebar } from "@/components/sidebar/sidebar";
 import { Button } from "@/components/ui/button";
-import { useCurrentPlayer } from "@/hooks/useCurrentPlayer";
+import { useCurrentPlayer } from "@/hooks/use-current-player";
 import { gameAtom, wsAtom } from "@/hooks/useGame";
 import { ItemsTable } from "@/modules/lobby/components/items-table";
 import { Messages, Role } from "@/types";

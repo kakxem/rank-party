@@ -7,7 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useCurrentPlayer } from "@/hooks/useCurrentPlayer";
+import { useCurrentPlayer } from "@/hooks/use-current-player";
 import { gameAtom } from "@/hooks/useGame";
 import { processedData } from "@/lib/game";
 import { Role, type Item } from "@/types";
