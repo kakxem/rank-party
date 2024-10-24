@@ -1,4 +1,5 @@
 import { gameAtom } from "@/hooks/useGame";
+import { getSavedPlayer } from "@/lib/game";
 import { Player } from "@/types";
 import { useAtomValue } from "jotai";
 import { useMemo } from "react";
@@ -7,8 +8,8 @@ export const useCurrentPlayer = (): Player | undefined => {
   const game = useAtomValue(gameAtom);
 
   const currentPlayer = useMemo(() => {
-    const { id } = JSON.parse(localStorage.getItem("player") ?? "{}");
-    return game.players.find((player) => player.id === id);
+    const savedPlayer = getSavedPlayer();
+    return game.players.find((player) => player.id === savedPlayer?.id);
   }, [game.players]);
 
   return currentPlayer;

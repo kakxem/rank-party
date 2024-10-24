@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { gameAtom, wsAtom } from "@/hooks/useGame";
+import { getSavedPlayer } from "@/lib/game";
 import { Messages, type Item } from "@/types";
 import { useAtomValue } from "jotai";
 import { FileDown } from "lucide-react";
@@ -25,9 +26,8 @@ export const ImportButton = () => {
         if (!data) return;
 
         // overwrite 'createdBy' in case the player is not in the game
-        const player = localStorage.getItem("player");
-        if (!player) return;
-        const { id } = JSON.parse(player);
+        const savedPlayer = getSavedPlayer();
+        const { id } = savedPlayer;
 
         const parsedData = data.map((item: Item) => {
           const isPlayerInGame = game.players.some(

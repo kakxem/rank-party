@@ -18,10 +18,9 @@ export const processedData = (game: Game): ResultItem[] =>
     .sort((a, b) => b.averageScore - a.averageScore); // Sort by averageScore in descending order
 
 export const getSavedPlayer = () => {
-  return JSON.parse(localStorage.getItem("player") ?? "{}") as Pick<
-    Player,
-    "id" | "name"
-  >;
+  return JSON.parse(
+    localStorage.getItem("player") ?? "{id: null, name: null}",
+  ) as Pick<Player, "id" | "name">;
 };
 
 export const setSavedPlayer = (player: Pick<Player, "id" | "name">) => {
