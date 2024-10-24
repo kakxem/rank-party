@@ -1,14 +1,20 @@
 import { atom, useSetAtom } from "jotai";
 import { useEffect } from "react";
-export const openAtom = atom<boolean>(false);
-export const formTypeAtom = atom<"create" | "join">("create");
+
+export enum FormType {
+  CREATE,
+  JOIN,
+}
+
+export const openFormAtom = atom<boolean>(false);
+export const formTypeAtom = atom<FormType>(FormType.CREATE);
 export const dialogInfoAtom = atom<{
   playerName: string;
   roomCode: string;
 }>({ playerName: "", roomCode: "" });
 
-export const useDialog = () => {
-  const setOpen = useSetAtom(openAtom);
+export const useFormDialog = () => {
+  const setOpen = useSetAtom(openFormAtom);
   const setFormType = useSetAtom(formTypeAtom);
   const setDialogInfo = useSetAtom(dialogInfoAtom);
 
@@ -18,18 +24,18 @@ export const useDialog = () => {
 
     if (id) {
       setDialogInfo((prev) => ({ ...prev, roomCode: id }));
-      setFormType("join");
+      setFormType(FormType.JOIN);
       setOpen(true);
     }
   }, [setDialogInfo, setFormType, setOpen]);
 
   const handleOpenCreate = () => {
-    setFormType("create");
+    setFormType(FormType.CREATE);
     setOpen(true);
   };
 
   const handleOpenJoin = () => {
-    setFormType("join");
+    setFormType(FormType.JOIN);
     setOpen(true);
   };
 

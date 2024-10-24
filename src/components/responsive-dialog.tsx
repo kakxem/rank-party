@@ -15,21 +15,22 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import { openAtom } from "@/hooks/use-dialog";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { useAtom } from "jotai";
 
 export function ResponsiveDialog({
   children,
   title,
   description,
+  open,
+  setOpen,
 }: {
   children: React.ReactNode;
   title: string;
   description: string;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [open, setOpen] = useAtom(openAtom);
 
   if (isDesktop) {
     return (
