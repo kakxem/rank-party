@@ -1,7 +1,7 @@
 import { ChangeWaitingTime } from "@/components/sidebar/settings/components/change-waiting-time";
 import { ImportAndExportList } from "@/components/sidebar/settings/components/import-and-export-list";
 import { ShowInactivePlayers } from "@/components/sidebar/settings/components/show-inactive-players";
-import { gameAtom } from "@/hooks/useGame";
+import { gameAtom } from "@/hooks/use-game";
 import { Scene } from "@/types";
 import { useAtomValue } from "jotai";
 

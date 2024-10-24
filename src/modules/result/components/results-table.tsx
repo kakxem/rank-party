@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useCurrentPlayer } from "@/hooks/use-current-player";
-import { gameAtom } from "@/hooks/useGame";
+import { gameAtom } from "@/hooks/use-game";
 import { processedData } from "@/lib/game";
 import { Role, type Item } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";

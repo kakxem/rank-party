@@ -1,6 +1,6 @@
 import { Debug } from "@/components/debug";
 import { EditableRoomName } from "@/components/editable-room-name";
-import { gameAtom, useGame } from "@/hooks/useGame";
+import { gameAtom, useGame } from "@/hooks/use-game";
 import { Game } from "@/modules/game";
 import { Lobby } from "@/modules/lobby";
 import { Main } from "@/modules/main";

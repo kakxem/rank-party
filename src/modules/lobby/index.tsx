@@ -1,7 +1,7 @@
 import { Sidebar } from "@/components/sidebar/sidebar";
 import { Button } from "@/components/ui/button";
 import { useCurrentPlayer } from "@/hooks/use-current-player";
-import { gameAtom, wsAtom } from "@/hooks/useGame";
+import { gameAtom, wsAtom } from "@/hooks/use-game";
 import { ItemsTable } from "@/modules/lobby/components/items-table";
 import { Messages, Role } from "@/types";
 import { useAtomValue } from "jotai";

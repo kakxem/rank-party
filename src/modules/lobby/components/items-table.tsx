@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Input } from "@/components/ui/input";
-import { gameAtom, wsAtom } from "@/hooks/useGame";
+import { gameAtom, wsAtom } from "@/hooks/use-game";
 import { YOUTUBE_REGEX } from "@/lib/regex";
 import type { Item } from "@/types";
 import { Messages } from "@/types";

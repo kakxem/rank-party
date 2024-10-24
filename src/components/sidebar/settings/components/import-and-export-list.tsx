@@ -1,7 +1,7 @@
 import { ExportButton } from "@/components/export-button";
 import { ImportButton } from "@/components/import-button";
 import { useCurrentPlayer } from "@/hooks/use-current-player";
-import { gameAtom } from "@/hooks/useGame";
+import { gameAtom } from "@/hooks/use-game";
 import { Role, Scene } from "@/types";
 import { useAtomValue } from "jotai";
 

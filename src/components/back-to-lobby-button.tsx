@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { wsAtom } from "@/hooks/useGame";
+import { wsAtom } from "@/hooks/use-game";
 import { Messages } from "@/types";
 import { useAtomValue } from "jotai";
 import { ArrowLeft } from "lucide-react";

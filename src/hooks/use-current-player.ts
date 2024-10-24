@@ -1,4 +1,4 @@
-import { gameAtom } from "@/hooks/useGame";
+import { gameAtom } from "@/hooks/use-game";
 import { getSavedPlayer } from "@/lib/game";
 import { Player } from "@/types";
 import { useAtomValue } from "jotai";

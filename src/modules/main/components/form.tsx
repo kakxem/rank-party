@@ -1,8 +1,8 @@
 import { ResponsiveDialog } from "@/components/responsive-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { wsAtom } from "@/hooks/use-game";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { wsAtom } from "@/hooks/useGame";
 import { getSavedPlayer, setSavedPlayer } from "@/lib/game";
 import { cn } from "@/lib/utils";
 import type { ConnectionData } from "@/types";

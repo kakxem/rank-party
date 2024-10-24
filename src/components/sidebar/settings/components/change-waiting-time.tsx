@@ -1,5 +1,5 @@
 import { Slider } from "@/components/ui/slider";
-import { wsAtom } from "@/hooks/useGame";
+import { wsAtom } from "@/hooks/use-game";
 import { Messages, type Settings } from "@/types";
 import { useAtomValue } from "jotai";
 

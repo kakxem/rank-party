@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { gameAtom, wsAtom } from "@/hooks/useGame";
+import { gameAtom, wsAtom } from "@/hooks/use-game";
 import { getProxyImageUrl } from "@/lib/image-proxy";
 import { YOUTUBE_REGEX } from "@/lib/regex";
 import { cn } from "@/lib/utils";

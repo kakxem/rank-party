@@ -1,4 +1,4 @@
-import { gameAtom, wsAtom } from "@/hooks/useGame";
+import { gameAtom, wsAtom } from "@/hooks/use-game";
 import { Messages, Scene } from "@/types";
 import { useAtomValue } from "jotai";
 import { KeyboardEvent, useEffect, useRef } from "react";
@@ -71,7 +71,7 @@ export const EditableRoomName = () => {
       suppressContentEditableWarning
       onBlur={handleInputChange}
       onKeyDown={handleKeyDown}
-      className="font-baloo2 overflow-hidden px-10 py-2 text-center text-5xl font-semibold focus:outline-none md:text-6xl lg:text-7xl"
+      className="overflow-hidden px-10 py-2 text-center font-baloo2 text-5xl font-semibold focus:outline-none md:text-6xl lg:text-7xl"
     >
       {game.name || "Party Rank Group"}
     </h1>

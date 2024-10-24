@@ -1,5 +1,5 @@
 import { showInactivePlayersAtom } from "@/components/sidebar/settings/atoms";
-import { gameAtom } from "@/hooks/useGame";
+import { gameAtom } from "@/hooks/use-game";
 import { cn } from "@/lib/utils";
 import { Role } from "@/types";
 import { useAtomValue } from "jotai";

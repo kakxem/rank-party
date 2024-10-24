@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { gameAtom } from "@/hooks/useGame";
+import { gameAtom } from "@/hooks/use-game";
 import { processedData } from "@/lib/game";
 import type { ResultItem } from "@/types";
 import { useAtomValue } from "jotai";

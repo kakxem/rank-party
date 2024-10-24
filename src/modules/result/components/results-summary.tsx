@@ -1,4 +1,4 @@
-import { gameAtom } from "@/hooks/useGame";
+import { gameAtom } from "@/hooks/use-game";
 import { processedData } from "@/lib/game";
 import { getProxyImageUrl } from "@/lib/image-proxy";
 import { YOUTUBE_REGEX } from "@/lib/regex";
