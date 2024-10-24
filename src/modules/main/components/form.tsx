@@ -53,9 +53,9 @@ export const Form = () => {
     };
     const roomId = isJoin ? roomCode : Math.random().toString(36).slice(2, 8);
 
-    const host = import.meta.env.VITE_WS_HOST ?? "127.0.0.1:1999";
+    const host = import.meta.env.VITE_WS_HOST ?? "ws://127.0.0.1:1999";
     const ws = new WebSocket(
-      `ws://${host}/party/${roomId}?data=${encodeURIComponent(
+      `${host}/party/${roomId}?data=${encodeURIComponent(
         JSON.stringify(data),
       )}`,
     );
