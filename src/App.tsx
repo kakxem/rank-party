@@ -18,7 +18,7 @@ function App() {
     <>
       <SharedHelmet />
 
-      <div className="flex h-screen flex-col justify-center pt-5 lg:gap-10 lg:pt-10">
+      <div className="flex h-screen flex-col justify-center py-10 lg:py-5">
         <header className="flex h-full max-h-[6rem] items-center justify-center">
           <EditableRoomName />
         </header>
