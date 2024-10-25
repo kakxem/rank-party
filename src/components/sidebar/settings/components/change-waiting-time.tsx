@@ -1,12 +1,19 @@
 import { Slider } from "@/components/ui/slider";
-import { wsAtom } from "@/hooks/use-game";
-import { Messages, type Settings } from "@/types";
+import { useCurrentPlayer } from "@/hooks/use-current-player";
+import { gameAtom, wsAtom } from "@/hooks/use-game";
+import { Messages, Role, Scene, type Settings } from "@/types";
 import { useAtomValue } from "jotai";
 
 const TIMEOUT_VALUES = [1, 3, 5, 7, 10];
 
 export const ChangeWaitingTime = () => {
+  const game = useAtomValue(gameAtom);
   const ws = useAtomValue(wsAtom);
+  const currentPlayer = useCurrentPlayer();
+
+  const isAdmin = currentPlayer?.role === Role.ADMIN;
+  const isLobby = game.scene === Scene.LOBBY;
+  const showWaitingTime = isAdmin && isLobby;
 
   const handleTimeoutChange = (value: number) => {
     const settings: Partial<Settings> = { timeout: TIMEOUT_VALUES[value] };
@@ -18,6 +25,8 @@ export const ChangeWaitingTime = () => {
       }),
     );
   };
+
+  if (!showWaitingTime) return null;
 
   return (
     <div className="flex flex-col items-start">
