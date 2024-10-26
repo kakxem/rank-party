@@ -112,7 +112,7 @@ export const ResultsTable = () => {
         {currentPlayer?.role === Role.ADMIN && <BackToLobbyButton />}
         <DownloadButton />
       </header>
-      <div className="mt-5 h-full overflow-x-auto rounded-lg border">
+      <div className="mt-5 h-full overflow-x-auto rounded-lg border transition-colors hover:border-primary/50">
         <DataTable columns={columns} data={processedData(game)} />
       </div>
     </section>

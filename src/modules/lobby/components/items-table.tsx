@@ -64,6 +64,7 @@ export const ItemsTable = () => {
         return (
           <Button
             variant="ghost"
+            className="w-full hover:bg-transparent"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             Name
@@ -95,6 +96,7 @@ export const ItemsTable = () => {
         return (
           <Button
             variant="ghost"
+            className="w-full hover:bg-transparent"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             Created By
@@ -105,7 +107,11 @@ export const ItemsTable = () => {
       cell: ({ row }) => {
         const createdBy = row.getValue("createdBy") as string;
         const player = game.players.find((item) => item.id === createdBy);
-        return <div className="max-w-md truncate">{player?.name ?? "-"}</div>;
+        return (
+          <div className="max-w-md truncate text-center">
+            {player?.name ?? "-"}
+          </div>
+        );
       },
     },
     {
@@ -157,7 +163,7 @@ export const ItemsTable = () => {
       </header>
 
       {/* Table */}
-      <div className="mt-5 h-full overflow-x-auto rounded-lg border transition-colors duration-200 hover:border-primary/50">
+      <div className="mt-5 h-full overflow-x-auto rounded-lg border transition-colors hover:border-primary/50">
         <DataTable columns={columns} data={game.list} />
       </div>
     </section>

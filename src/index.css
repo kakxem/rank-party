@@ -85,13 +85,14 @@
   }
 
   *::-webkit-scrollbar-track {
+    margin: 10px 0;
     background: hsl(var(--scrollbar-track));
-    border-radius: 5px;
+    border-radius: var(--radius);
   }
 
   *::-webkit-scrollbar-thumb {
     background-color: hsl(var(--scrollbar-thumb));
-    border-radius: 14px;
+    border-radius: var(--radius);
     border: 3px solid hsl(var(--scrollbar-track));
   }
 
