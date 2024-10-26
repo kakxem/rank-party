@@ -73,6 +73,9 @@ module.exports = {
       fontFamily: {
         baloo2: ["Baloo2", "sans-serif"],
       },
+      scale: {
+        103: "1.03",
+      },
     },
   },
   plugins: [

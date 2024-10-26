@@ -157,7 +157,7 @@ export const ItemsTable = () => {
       </header>
 
       {/* Table */}
-      <div className="mt-5 h-full overflow-x-auto rounded-lg border">
+      <div className="mt-5 h-full overflow-x-auto rounded-lg border transition-colors duration-200 hover:border-primary/50">
         <DataTable columns={columns} data={game.list} />
       </div>
     </section>

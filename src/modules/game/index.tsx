@@ -109,10 +109,10 @@ export const Game = () => {
             <Button
               key={index + 1}
               className={cn(
-                "transition-scale h-20 w-20 select-none border text-3xl shadow-md hover:scale-110",
+                "h-20 w-20 select-none border text-3xl shadow-md transition-colors",
                 selectedScore === index + 1 && "scale-110 bg-accent",
               )}
-              variant="ghost"
+              variant="outline"
               onClick={() => setSelectedScore(index + 1)}
             >
               {index + 1}
