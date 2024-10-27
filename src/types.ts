@@ -38,6 +38,7 @@ export enum Messages {
   UPDATE_ROOM_NAME = "updateRoomName",
   START_GAME = "startGame",
   BACK_TO_LOBBY = "backToLobby",
+  REMOVE_PLAYER = "removePlayer",
   ADD_SCORE = "addScore",
   ADD_ITEM = "addItem",
   IMPORT_LIST = "importList",
@@ -61,6 +62,7 @@ export type State = {
 
 export interface Settings {
   timeout: number;
+  blacklist: string[];
 }
 
 export interface Game {

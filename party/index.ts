@@ -1,6 +1,7 @@
 import type * as Party from "partykit/server";
 import {
   Messages,
+  Role,
   Scene,
   type ConnectionData,
   type Game,
@@ -27,9 +28,16 @@ export default class Server implements Party.Server {
     const { player, join } = connectionData;
     const game = await this.getGame();
 
-    if (!game && join) {
-      sendError({ conn, message: "Game not found" });
-      return await conn.close();
+    if (join) {
+      if (!game) {
+        sendError({ conn, message: "Game not found" });
+        return conn.close();
+      }
+
+      if (game?.settings.blacklist.includes(player.id)) {
+        sendError({ conn, message: "You are not allowed to join this game" });
+        return conn.close();
+      }
     }
 
     let newGame = game;
@@ -66,6 +74,8 @@ export default class Server implements Party.Server {
       [Messages.BACK_TO_LOBBY]: () => this.handleBackToLobby(game),
       [Messages.ADD_SCORE]: () => this.handleAddScore(game, data, playerId),
       [Messages.UPDATE_SETTINGS]: () => this.handleUpdateSettings(game, data),
+      [Messages.REMOVE_PLAYER]: () =>
+        this.handleRemovePlayer(game, data, playerId),
     };
 
     if (messageHandlers[type]) {
@@ -268,6 +278,37 @@ export default class Server implements Party.Server {
     this.updateAndPublishGame({
       updatedGame: game,
     });
+  }
+
+  private handleRemovePlayer(
+    game: Game,
+    data: { playerId: string },
+    adminId: string,
+  ) {
+    // Check if the sender is an admin
+    const sender = game.players.find((p) => p.id === adminId);
+    if (sender?.role !== Role.ADMIN) return;
+
+    // Add player to blacklist
+    game.settings.blacklist = [...game.settings.blacklist, data.playerId];
+
+    // Update game with new blacklist
+    this.updateAndPublishGame({
+      updatedGame: { settings: game.settings },
+    });
+
+    // Find and close the connection of the target player
+    for (const conn of this.room.getConnections()) {
+      const state = conn.state as { id: string } | undefined;
+      if (state?.id === data.playerId) {
+        sendError({
+          conn,
+          message: "You have been removed from the game by the admin",
+        });
+        conn.close();
+        break;
+      }
+    }
   }
 }
 

@@ -1,5 +1,6 @@
 import { ChangeWaitingTime } from "@/components/sidebar/settings/components/change-waiting-time";
 import { ImportAndExportList } from "@/components/sidebar/settings/components/import-and-export-list";
+import { ManageBlacklist } from "@/components/sidebar/settings/components/manage-blacklist";
 import { ShowInactivePlayers } from "@/components/sidebar/settings/components/show-inactive-players";
 
 const Section = ({ children }: { children: React.ReactNode }) => {
@@ -23,6 +24,7 @@ export const Settings = () => {
           <SectionTitle>Game Settings</SectionTitle>
           <ImportAndExportList />
           <ChangeWaitingTime />
+          <ManageBlacklist />
         </Section>
       </div>
     </div>

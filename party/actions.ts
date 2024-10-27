@@ -27,6 +27,7 @@ export const createNewGame = ({ player }: ConnectionData): Game => {
     },
     settings: {
       timeout: 3,
+      blacklist: [],
     },
   };
 };

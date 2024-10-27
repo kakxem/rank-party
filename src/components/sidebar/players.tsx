@@ -1,13 +1,28 @@
 import { showInactivePlayersAtom } from "@/components/sidebar/settings/atoms";
-import { gameAtom } from "@/hooks/use-game";
+import { Button } from "@/components/ui/button";
+import { useCurrentPlayer } from "@/hooks/use-current-player";
+import { gameAtom, wsAtom } from "@/hooks/use-game";
 import { cn } from "@/lib/utils";
-import { Role } from "@/types";
+import { Messages, Role } from "@/types";
 import { useAtomValue } from "jotai";
-import { Crown, User } from "lucide-react";
+import { Crown, User, X } from "lucide-react";
 
 export const Players = () => {
   const game = useAtomValue(gameAtom);
+  const ws = useAtomValue(wsAtom);
   const showInactivePlayers = useAtomValue(showInactivePlayersAtom);
+  const currentPlayer = useCurrentPlayer();
+
+  const isAdmin = currentPlayer?.role === Role.ADMIN;
+
+  const handleRemovePlayer = (playerId: string) => {
+    ws?.send(
+      JSON.stringify({
+        type: Messages.REMOVE_PLAYER,
+        data: { playerId },
+      }),
+    );
+  };
 
   return (
     <div className="flex h-full flex-col gap-3">
@@ -39,9 +54,16 @@ export const Players = () => {
                   </span>
                   <span className="font-medium">{player.name}</span>
                 </div>
-                <span className="text-sm font-medium">
-                  {player.active ? "Active" : "Inactive"}
-                </span>
+                {player.active && player.role !== Role.ADMIN && isAdmin && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-fit w-fit p-2 text-red-700 hover:bg-red-500/20 hover:text-red-700"
+                    onClick={() => handleRemovePlayer(player.id)}
+                  >
+                    <X size={16} aria-hidden="true" />
+                  </Button>
+                )}
               </div>
             </li>
           );

@@ -3,8 +3,7 @@ import { atom, useAtomValue, useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
-export const wsAtom = atom<WebSocket | null>(null);
-export const gameAtom = atom<Game>({
+const DEFAULT_GAME: Game = {
   id: undefined,
   scene: Scene.MAIN,
   name: undefined,
@@ -16,8 +15,12 @@ export const gameAtom = atom<Game>({
   },
   settings: {
     timeout: 3,
+    blacklist: [],
   },
-});
+};
+
+export const wsAtom = atom<WebSocket | null>(null);
+export const gameAtom = atom<Game>(DEFAULT_GAME);
 
 export const useGame = () => {
   const ws = useAtomValue(wsAtom);
@@ -51,7 +54,7 @@ export const useGame = () => {
     };
 
     ws.onclose = () => {
-      console.log("close");
+      setGame(DEFAULT_GAME);
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
