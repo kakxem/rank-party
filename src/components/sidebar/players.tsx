@@ -5,7 +5,7 @@ import { gameAtom, wsAtom } from "@/hooks/use-game";
 import { cn } from "@/lib/utils";
 import { Messages, Role } from "@/types";
 import { useAtomValue } from "jotai";
-import { Crown, User, X } from "lucide-react";
+import { Crown, Unplug, User, X } from "lucide-react";
 
 export const Players = () => {
   const game = useAtomValue(gameAtom);
@@ -13,7 +13,7 @@ export const Players = () => {
   const showInactivePlayers = useAtomValue(showInactivePlayersAtom);
   const currentPlayer = useCurrentPlayer();
 
-  const isAdmin = currentPlayer?.role === Role.ADMIN;
+  const isUserAdmin = currentPlayer?.role === Role.ADMIN;
 
   const handleRemovePlayer = (playerId: string) => {
     ws?.send(
@@ -29,6 +29,9 @@ export const Players = () => {
       <ul className="mt-3 flex flex-1 flex-col gap-3 overflow-y-auto">
         {game.players.map((player) => {
           if (!showInactivePlayers && !player.active) return null;
+
+          const isAdmin = player.role === Role.ADMIN;
+
           return (
             <li
               key={player.id}
@@ -46,15 +49,16 @@ export const Players = () => {
               <div className="flex flex-1 items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="text-current">
-                    {player.role === Role.ADMIN ? (
-                      <Crown size={24} aria-hidden="true" />
-                    ) : (
+                    {isAdmin && <Crown size={24} aria-hidden="true" />}
+                    {!player.active && <Unplug size={24} aria-hidden="true" />}
+                    {!isAdmin && player.active && (
                       <User size={24} aria-hidden="true" />
                     )}
                   </span>
                   <span className="font-medium">{player.name}</span>
                 </div>
-                {player.active && player.role !== Role.ADMIN && isAdmin && (
+
+                {player.active && !isAdmin && isUserAdmin && (
                   <Button
                     variant="ghost"
                     size="icon"
