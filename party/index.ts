@@ -87,14 +87,40 @@ export default class Server implements Party.Server {
     const game = await this.getGame();
     if (!game) return;
 
+    // Get the disconnected player
+    const disconnectedPlayer = game.players.find(
+      (player) => player.id === conn.state?.id,
+    );
+
     game.players = game.players.map((item) =>
-      item.id === conn.state?.id ? { ...item, active: false } : item,
+      item.id === conn.state?.id
+        ? {
+            ...item,
+            active: false,
+            role:
+              disconnectedPlayer?.role === Role.ADMIN ? Role.USER : item.role,
+          }
+        : item,
     );
 
     if (game.players.every((item) => !item.active)) {
       // Maybe this is not needed, because probably the room will be deleted when the last connection is closed
       await this.room.storage.delete("game");
     } else {
+      if (disconnectedPlayer?.role === Role.ADMIN) {
+        const nextAdmin = game.players.find(
+          (player) => player.active && player.id !== conn.state?.id,
+        );
+
+        if (nextAdmin) {
+          game.players = game.players.map((player) =>
+            player.id === nextAdmin.id
+              ? { ...player, role: Role.ADMIN }
+              : player,
+          );
+        }
+      }
+
       this.updateAndPublishGame({
         updatedGame: game,
       });
