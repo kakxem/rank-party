@@ -1,5 +1,6 @@
 import { BackToLobbyButton } from "@/components/back-to-lobby-button";
 import { DownloadButton } from "@/components/download-button";
+import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import {
   Tooltip,
@@ -71,17 +72,17 @@ export const ResultsTable = () => {
         const totalScores = scores.reduce((acc, curr) => acc + curr.score, 0);
         const averageScore = scores.length ? totalScores / scores.length : 0;
 
-        // Encuentra el jugador correspondiente al identificador
+        // Find the player corresponding to the ID
         const findPlayerById = (id: string) =>
           game.players.find((player) => player.id === id);
 
-        // Ordena las puntuaciones en orden descendente por puntuación
+        // Sort scores in descending order by score
         const sortedScores = scores.sort((a, b) => b.score - a.score);
 
-        // Mapea los valores de la puntuación a un array que contiene el nombre y la puntuación
+        // Map score values to an array containing name and score
         const tooltipContent = sortedScores.map((s) => {
           const player = findPlayerById(s.player);
-          const playerName = player ? player.name : "Unknown Player"; // Reemplaza 'Unknown Player' si el jugador no se encuentra
+          const playerName = player ? player.name : "Unknown Player"; // Replace with 'Unknown Player' if player not found
 
           return (
             <div key={s.player}>
@@ -92,13 +93,13 @@ export const ResultsTable = () => {
 
         return (
           <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <div className="max-w-xs">
-                  {averageScore.toFixed(2)} {/* Display the average score */}
-                </div>
+            <Tooltip delayDuration={0}>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" className="cursor-default">
+                  {averageScore.toFixed(2)}
+                </Button>
               </TooltipTrigger>
-              <TooltipContent>{tooltipContent}</TooltipContent>
+              <TooltipContent side="right">{tooltipContent}</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         );
