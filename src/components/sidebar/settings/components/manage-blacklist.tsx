@@ -1,3 +1,4 @@
+import { SettingTemplate } from "@/components/sidebar/settings/components/setting-template";
 import { Button } from "@/components/ui/button";
 import { useCurrentPlayer } from "@/hooks/use-current-player";
 import { gameAtom, wsAtom } from "@/hooks/use-game";
@@ -29,11 +30,10 @@ export const ManageBlacklist = () => {
   };
 
   return (
-    <div className="flex flex-col items-start">
-      <h3 className="mb-2 text-lg font-semibold">Blocked Players</h3>
-      <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        List of players that are not allowed to join the game.
-      </p>
+    <SettingTemplate
+      title="Blocked players"
+      description="List of players that are not allowed to join the game."
+    >
       {game.settings.blacklist.length === 0 ? (
         <p className="w-full text-center font-medium text-muted-foreground">
           No blocked players.
@@ -74,6 +74,6 @@ export const ManageBlacklist = () => {
           })}
         </ul>
       )}
-    </div>
+    </SettingTemplate>
   );
 };

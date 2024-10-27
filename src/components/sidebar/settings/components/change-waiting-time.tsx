@@ -1,3 +1,4 @@
+import { SettingTemplate } from "@/components/sidebar/settings/components/setting-template";
 import { Slider } from "@/components/ui/slider";
 import { useCurrentPlayer } from "@/hooks/use-current-player";
 import { gameAtom, wsAtom } from "@/hooks/use-game";
@@ -29,11 +30,10 @@ export const ChangeWaitingTime = () => {
   if (!showWaitingTime) return null;
 
   return (
-    <div className="flex flex-col items-start">
-      <h3 className="mb-2 text-lg font-semibold">Change Waiting Time</h3>
-      <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        Adjust the waiting time between items in the game.
-      </p>
+    <SettingTemplate
+      title="Game waiting time"
+      description="Adjust the waiting time between items in the game."
+    >
       <div className="flex h-full w-full items-center space-x-2">
         <Slider
           defaultValue={[1]}
@@ -51,6 +51,6 @@ export const ChangeWaitingTime = () => {
           </div>
         ))}
       </div>
-    </div>
+    </SettingTemplate>
   );
 };

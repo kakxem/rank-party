@@ -1,5 +1,6 @@
 import { ExportButton } from "@/components/export-button";
 import { ImportButton } from "@/components/import-button";
+import { SettingTemplate } from "@/components/sidebar/settings/components/setting-template";
 import { useCurrentPlayer } from "@/hooks/use-current-player";
 import { gameAtom } from "@/hooks/use-game";
 import { Role, Scene } from "@/types";
@@ -14,17 +15,18 @@ export const ImportAndExportList = () => {
   const showImport = isAdmin && !isResultScene;
 
   return (
-    <div className="flex flex-col items-start">
-      <h3 className="mb-2 text-lg font-semibold">Data management</h3>
-      <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {showImport
+    <SettingTemplate
+      title="Data management"
+      description={
+        showImport
           ? "You can import and export the table list."
-          : "You can export the table list."}
-      </p>
+          : "You can export the table list."
+      }
+    >
       <div className="flex w-full items-center gap-2">
         {showImport && <ImportButton />}
         <ExportButton />
       </div>
-    </div>
+    </SettingTemplate>
   );
 };
