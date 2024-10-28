@@ -1,6 +1,7 @@
 import { Debug } from "@/components/debug";
 import { EditableRoomName } from "@/components/editable-room-name";
 import { SharedHelmet } from "@/components/shared-helmet";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 import { gameAtom, useGame } from "@/hooks/use-game";
 import { Game } from "@/modules/game";
 import { Lobby } from "@/modules/lobby";
@@ -21,6 +22,7 @@ function App() {
       <div className="flex h-screen flex-col justify-center py-10 lg:py-5">
         <header className="flex h-full max-h-[6rem] items-center justify-center">
           <EditableRoomName />
+          <ThemeSwitcher />
         </header>
 
         <main className="container flex max-h-[65rem] flex-grow gap-4 overflow-y-auto overflow-x-hidden px-3 pb-3 sm:px-10">
