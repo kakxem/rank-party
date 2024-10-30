@@ -18,10 +18,10 @@ export const Game = () => {
   const [selectedScore, setSelectedScore] = useState<number | null>(null);
   const [remainingTime, setRemainingTime] = useState(5);
 
-  const alreadyVoted = game?.list[game?.state?.actualItem]?.score?.length;
   const actualItem = game?.list[game?.state?.actualItem];
   const totalItems = game?.list?.length || 0;
   const currentItemNumber = (game?.state?.actualItem || 0) + 1;
+  const alreadyVoted = actualItem?.score?.length;
 
   useEffect(() => {
     // Reset if the actual item changes
@@ -64,54 +64,66 @@ export const Game = () => {
   }, [selectedScore, ws]);
 
   return (
-    <section className="flex flex-1 flex-col rounded-xl">
-      <section className="flex grow flex-col items-center justify-center gap-5">
+    <section className="flex flex-1 flex-col gap-2 rounded-xl">
+      <section className="flex grow flex-col items-center justify-center gap-2">
         <div className="text-center">
-          <h2 className="text-5xl font-bold">{actualItem.name}</h2>
-          <div className="mt-2 flex items-center justify-center gap-2 text-xl text-gray-500">
+          <h2 className="max-w-[90vw] truncate p-4 text-4xl font-bold md:max-w-2xl lg:max-w-4xl lg:text-5xl">
+            {actualItem.name}
+          </h2>
+
+          <div className="flex items-center justify-center gap-1 text-base text-gray-500 md:text-xl">
             <span>
               {currentItemNumber} of {totalItems}
             </span>
             <span className="mx-2">•</span>
-            <Users className="h-5 w-5" />
+            <Users className="h-4 w-4 md:h-5 md:w-5" />
             <span>
               {alreadyVoted}/{activePlayers}
             </span>
             {alreadyVoted === activePlayers && (
               <>
                 <span className="mx-2">•</span>
-                <Clock className="h-5 w-5" />
+                <Clock className="h-4 w-4 md:h-5 md:w-5" />
                 <span>{remainingTime}s</span>
               </>
             )}
           </div>
         </div>
-        <div className="flex aspect-video w-full max-w-5xl shadow-2xl transition-transform">
+        <div className="aspect-video w-full max-w-[90vw] rounded-lg border bg-gray-50 sm:rounded-xl md:max-w-5xl">
           {videoId ? (
             <lite-youtube
               videoid={videoId}
               videotitle={actualItem.name}
-              style={{ borderRadius: "0.25rem" }}
+              style={{ borderRadius: "var(--radius)" }}
             />
           ) : (
             <img
               src={getProxyImageUrl(actualItem.link)}
               alt={actualItem.name}
-              className="h-full w-full rounded object-contain"
+              className="h-full w-full rounded-lg object-contain"
             />
           )}
         </div>
+        <p className="text-center text-xs italic text-gray-500 sm:text-sm md:text-base">
+          Added by{" "}
+          <span className="font-bold">
+            {
+              game.players.find((player) => player.id === actualItem?.createdBy)
+                ?.name
+            }
+          </span>
+        </p>
       </section>
 
-      <div className="relative flex grow flex-col flex-wrap justify-between px-10">
+      <section className="relative flex grow flex-col flex-wrap justify-between">
         <div className="flex flex-wrap justify-center gap-5">
           {Array.from({ length: 10 }).map((_, index) => (
             <Button
               key={index + 1}
               className={cn(
-                "h-20 w-20 select-none border text-3xl shadow-md transition-all",
+                "size-14 border bg-background text-3xl shadow hover:bg-accent/10 md:size-20",
                 selectedScore === index + 1 &&
-                  "scale-110 border-none bg-accent hover:border-none",
+                  "scale-110 bg-accent shadow-md hover:bg-accent/90",
               )}
               variant="outline"
               onClick={() => setSelectedScore(index + 1)}
@@ -120,7 +132,7 @@ export const Game = () => {
             </Button>
           ))}
         </div>
-      </div>
+      </section>
     </section>
   );
 };
