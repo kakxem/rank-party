@@ -1,4 +1,4 @@
-export type Theme = "default" | "rose" | "blue" | "green";
+export type Theme = "default" | "rose" | "blue" | "green" | "purple";
 
 export const themes: { name: string; value: Theme }[] = [
   {
@@ -16,5 +16,9 @@ export const themes: { name: string; value: Theme }[] = [
   {
     name: "Green",
     value: "green",
+  },
+  {
+    name: "Purple",
+    value: "purple",
   },
 ] as const;

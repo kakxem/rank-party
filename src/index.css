@@ -76,7 +76,12 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply relative min-h-screen overflow-x-hidden bg-background text-foreground;
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--background)),
+      hsl(var(--background))
+    );
   }
 
   *::-webkit-scrollbar {
@@ -106,5 +111,37 @@
     font-weight: 600;
     font-style: normal;
     font-display: swap;
+  }
+
+  @keyframes aurora {
+    0% {
+      transform: scale(1) translate(0, 0);
+    }
+    50% {
+      transform: scale(1.05) translate(-2%, -2%);
+    }
+    100% {
+      transform: scale(1) translate(0, 0);
+    }
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        45deg,
+        hsl(var(--aurora-1) / 0.2) 0%,
+        transparent 40%
+      ),
+      linear-gradient(135deg, hsl(var(--aurora-2) / 0.2) 10%, transparent 50%),
+      linear-gradient(225deg, hsl(var(--aurora-3) / 0.2) 20%, transparent 60%);
+    transform-origin: center;
+    animation: aurora 10s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
   }
 }
