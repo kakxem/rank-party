@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 export const Game = () => {
   const game = useAtomValue(gameAtom);
   const ws = useAtomValue(wsAtom);
+
   const [videoId, setVideoId] = useState("");
   const [lastItem, setLastItem] = useState<string | null>(null);
   const [activePlayers, setActivePlayers] = useState(0);
@@ -80,6 +81,7 @@ export const Game = () => {
             <span>
               {alreadyVoted}/{activePlayers}
             </span>
+
             {alreadyVoted === activePlayers && (
               <>
                 <span className="mx-2">•</span>
@@ -89,7 +91,8 @@ export const Game = () => {
             )}
           </div>
         </div>
-        <div className="aspect-video w-full max-w-[90vw] rounded-lg border bg-gray-50 sm:rounded-xl md:max-w-5xl">
+
+        <div className="flex aspect-video w-full max-w-[90vw] items-center justify-center rounded-lg sm:rounded-xl md:max-w-5xl">
           {videoId ? (
             <lite-youtube
               videoid={videoId}
@@ -100,10 +103,11 @@ export const Game = () => {
             <img
               src={getProxyImageUrl(actualItem.link)}
               alt={actualItem.name}
-              className="h-full w-full rounded-lg object-contain"
+              className="h-full rounded-lg object-contain"
             />
           )}
         </div>
+
         <p className="text-center text-xs italic text-gray-500 sm:text-sm md:text-base">
           Added by{" "}
           <span className="font-bold">
